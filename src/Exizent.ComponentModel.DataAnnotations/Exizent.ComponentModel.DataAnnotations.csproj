@@ -2,12 +2,36 @@
 
     <PropertyGroup>
         <TargetFramework>netstandard2.1</TargetFramework>
+        <NoWarn>1591</NoWarn>
     </PropertyGroup>
 
     <PropertyGroup>
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    </PropertyGroup>
+
+
+    <PropertyGroup>
+        <Authors>Exizent Developers</Authors>
+        <Company>Exizent</Company>
+        <Description>
+            ComponentModel DataAnnotations for Exizent.
+        </Description>
+        <Copyright>Copyright © Exizent 2021</Copyright>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <PackageTags>Exizent;ComponentModel;DataAnnotations;Attributes</PackageTags>
+        <PackageProjectUrl>https://github.com/Exizent/Exizent.ComponentModel.DataAnnotations</PackageProjectUrl>
+        <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+        <RepositoryType>git</RepositoryType>
+        <RepositoryUrl>https://github.com/Exizent/Exizent.ComponentModel.DataAnnotations</RepositoryUrl>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
     </PropertyGroup>
     
     <ItemGroup>
