@@ -9,6 +9,7 @@ ENV PATH="/root/.dotnet/tools:${PATH}"
 COPY ./*.props .
 COPY ./*.targets .
 COPY ./*.sln .
+COPY ./*.png .
 
 COPY ./src/Exizent.ComponentModel.DataAnnotations/*.csproj ./src/Exizent.ComponentModel.DataAnnotations/
 COPY ./tests/Exizent.ComponentModel.DataAnnotations.Tests/*.csproj ./tests/Exizent.ComponentModel.DataAnnotations.Tests/
