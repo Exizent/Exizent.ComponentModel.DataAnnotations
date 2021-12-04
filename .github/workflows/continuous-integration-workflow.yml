@@ -8,6 +8,7 @@ jobs:
     env:
       VERSION: 0.0.${{ github.run_number }}-preview
       DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET
