@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exizent.ComponentModel.DataAnnotations", "src\Exizent.ComponentModel.DataAnnotations\Exizent.ComponentModel.DataAnnotations.csproj", "{E47E5661-6C15-4FDD-A0F5-F0A2BD92588C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exizent.ComponentModel.DataAnnotations.Tests", "tests\Exizent.ComponentModel.DataAnnotations.Tests\Exizent.ComponentModel.DataAnnotations.Tests.csproj", "{2AF8BFB3-15C4-4DA9-A2E7-0F44E20A1E18}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E47E5661-6C15-4FDD-A0F5-F0A2BD92588C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E47E5661-6C15-4FDD-A0F5-F0A2BD92588C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E47E5661-6C15-4FDD-A0F5-F0A2BD92588C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E47E5661-6C15-4FDD-A0F5-F0A2BD92588C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2AF8BFB3-15C4-4DA9-A2E7-0F44E20A1E18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2AF8BFB3-15C4-4DA9-A2E7-0F44E20A1E18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2AF8BFB3-15C4-4DA9-A2E7-0F44E20A1E18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2AF8BFB3-15C4-4DA9-A2E7-0F44E20A1E18}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
