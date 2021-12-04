@@ -5,6 +5,10 @@
         <NoWarn>1591</NoWarn>
     </PropertyGroup>
 
+    <ItemGroup>
+        <None Include="..\..\exizent.png" Pack="true" PackagePath="" />
+    </ItemGroup>
+
     <PropertyGroup>
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
@@ -26,6 +30,7 @@
     </PropertyGroup>
 
     <PropertyGroup>
+        <PackageIcon>exizent.png</PackageIcon>
         <PackageTags>Exizent;ComponentModel;DataAnnotations;Attributes</PackageTags>
         <PackageProjectUrl>https://github.com/Exizent/Exizent.ComponentModel.DataAnnotations</PackageProjectUrl>
         <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
