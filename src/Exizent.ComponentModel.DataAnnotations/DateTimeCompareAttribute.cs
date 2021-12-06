@@ -37,7 +37,7 @@ public class DateTimeCompareAttribute : ValidationAttribute
                 : null;
 
             result = new ValidationResult(
-                $"{validationContext.MemberName} must be {FormatEqualityCondition()} {otherPropertyInfo?.Name}",
+                $"{validationContext.MemberName} must be {FormatEqualityCondition()} {otherPropertyInfo?.Name}.",
                 memberNames);
         }
     

@@ -148,7 +148,7 @@ public class DateTimeCompareAttributeTests
             using var _ = new AssertionScope();
             isValid.Should().BeFalse();
             results[0].ErrorMessage.Should()
-                .Be($"{nameof(TestModel.EqualsValue)} must be equal to {nameof(TestModel.Value)}");
+                .Be($"{nameof(TestModel.EqualsValue)} must be equal to {nameof(TestModel.Value)}.");
             results[0].MemberNames.Should().BeEquivalentTo(nameof(TestModel.EqualsValue));
         }
     }
@@ -178,7 +178,7 @@ public class DateTimeCompareAttributeTests
             using var _ = new AssertionScope();
             isValid.Should().BeFalse();
             results[0].ErrorMessage.Should()
-                .Be($"{nameof(TestModel.NotEqualsValue)} must be not equal to {nameof(TestModel.Value)}");
+                .Be($"{nameof(TestModel.NotEqualsValue)} must be not equal to {nameof(TestModel.Value)}.");
             results[0].MemberNames.Should().BeEquivalentTo(nameof(TestModel.NotEqualsValue));
         }
     }
@@ -213,7 +213,7 @@ public class DateTimeCompareAttributeTests
             using var _ = new AssertionScope();
             isValid.Should().BeFalse();
             results[0].ErrorMessage.Should()
-                .Be($"{nameof(TestModel.GreaterThanValue)} must be greater than {nameof(TestModel.Value)}");
+                .Be($"{nameof(TestModel.GreaterThanValue)} must be greater than {nameof(TestModel.Value)}.");
             results[0].MemberNames.Should().BeEquivalentTo(nameof(TestModel.GreaterThanValue));
         }
     }
@@ -248,7 +248,7 @@ public class DateTimeCompareAttributeTests
             using var _ = new AssertionScope();
             isValid.Should().BeFalse();
             results[0].ErrorMessage.Should()
-                .Be($"{nameof(TestModel.GreaterThanOrEqualsValue)} must be greater than or equal to {nameof(TestModel.Value)}");
+                .Be($"{nameof(TestModel.GreaterThanOrEqualsValue)} must be greater than or equal to {nameof(TestModel.Value)}.");
             results[0].MemberNames.Should().BeEquivalentTo(nameof(TestModel.GreaterThanOrEqualsValue));
         }
     }
@@ -283,7 +283,7 @@ public class DateTimeCompareAttributeTests
             using var _ = new AssertionScope();
             isValid.Should().BeFalse();
             results[0].ErrorMessage.Should()
-                .Be($"{nameof(TestModel.LessThanValue)} must be less than {nameof(TestModel.Value)}");
+                .Be($"{nameof(TestModel.LessThanValue)} must be less than {nameof(TestModel.Value)}.");
             results[0].MemberNames.Should().BeEquivalentTo(nameof(TestModel.LessThanValue));
         }
     }
@@ -318,7 +318,7 @@ public class DateTimeCompareAttributeTests
             using var _ = new AssertionScope();
             isValid.Should().BeFalse();
             results[0].ErrorMessage.Should()
-                .Be($"{nameof(TestModel.LessThanOrEqualsValue)} must be less than or equal to {nameof(TestModel.Value)}");
+                .Be($"{nameof(TestModel.LessThanOrEqualsValue)} must be less than or equal to {nameof(TestModel.Value)}.");
             results[0].MemberNames.Should().BeEquivalentTo(nameof(TestModel.LessThanOrEqualsValue));
         }
     }
