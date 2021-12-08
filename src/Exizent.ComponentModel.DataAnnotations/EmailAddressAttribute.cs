@@ -2,10 +2,10 @@
 
 namespace Exizent.ComponentModel.DataAnnotations;
 
-public class EmailAddressAttribute : RegularExpressionAttribute
+public class EmailAddressAttribute : DataTypeRegularExpressionAttribute
 {
     public EmailAddressAttribute()
-        : base(@"[^\s@]+@[^\s\.]+\..+")
+        : base(DataType.EmailAddress, @"[^\s@]+@[^\s\.]+\..+")
     {
         ErrorMessage = "The field {0} must be a valid email address.";
     }
