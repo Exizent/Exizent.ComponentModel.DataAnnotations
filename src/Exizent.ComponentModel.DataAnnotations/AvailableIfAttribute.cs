@@ -1,41 +1,29 @@
-﻿using System.Reflection;
-
-namespace Exizent.ComponentModel.DataAnnotations;
+﻿namespace Exizent.ComponentModel.DataAnnotations;
 
 [AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
-public class AvailableIfAttribute : ValidationAttribute
+public class AvailableIfAttribute : DependantPropertyBaseAttribute
 {
-    public string DependentProperty { get; }
     public object? DependantPropertyRequiredValue { get; }
 
     public AvailableIfAttribute(string dependentProperty, object? dependantPropertyRequiredValue)
+        :base(dependentProperty, "{0} must be set to {1} to assign {2} to {3}")
     {
-        DependentProperty = dependentProperty;
         DependantPropertyRequiredValue = dependantPropertyRequiredValue;
     }
 
-    private bool IsValid(object? value, object? dependentPropertyValue)
-    {
-        return value is null
-               || Equals(dependentPropertyValue, DependantPropertyRequiredValue);
-    }
-    
-    protected override ValidationResult IsValid(object? value, ValidationContext validationContext)
-    {
-        var result = ValidationResult.Success!;
-        var dependentProperty = validationContext.ObjectType.GetRuntimeProperty(DependentProperty);
-        var dependentPropertyValue = dependentProperty.GetValue(validationContext.ObjectInstance, null);
+    protected override bool IsValid(object? value, object? dependentPropertyValue) =>
+        value is null
+        || Equals(dependentPropertyValue, DependantPropertyRequiredValue);
 
-        if (!IsValid(value, dependentPropertyValue))
-        {
-            var memberNames = validationContext.MemberName != null
-                ? new[] { validationContext.MemberName }
-                : null;
-            
-            result = new ValidationResult($"{dependentProperty.Name} must be set to {FormatDependantPropertyRequiredValue()} to assign {value} to {validationContext.MemberName}", memberNames);
-        }
-
-        return result;
+    protected override string FormatErrorMessage(object? value, object? dependentPropertyValue,
+        DependentPropertyValidationContext validationContext)
+    {
+        return string.Format(ErrorMessageString,
+            validationContext.GetDependentPropertyDisplayName(),
+            FormatDependantPropertyRequiredValue(),
+            value,
+            validationContext.ValidationContext.DisplayName
+        );
     }
 
     private string FormatDependantPropertyRequiredValue()

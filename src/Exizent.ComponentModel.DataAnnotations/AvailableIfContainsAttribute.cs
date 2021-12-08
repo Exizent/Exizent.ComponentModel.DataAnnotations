@@ -2,30 +2,22 @@
 
 namespace Exizent.ComponentModel.DataAnnotations;
 
-public class AvailableIfContainsAttribute : ValidationAttribute
+public class AvailableIfContainsAttribute : DependantPropertyBaseAttribute
 {
-    public string DependentProperty { get; }
     public object[] PossibleDependantPropertyValues { get; }
 
-    public AvailableIfContainsAttribute(string dependentProperty, params object[] possibleDependantPropertyValues)
-        : base("The {0} field must contain {1} to assign {2} to {3}.")
+    public AvailableIfContainsAttribute(string dependentProperty, params object[] possibleDependantPropertyValues) :
+        base(dependentProperty, "The {0} field must contain {1} to assign {2} to {3}.")
     {
-        DependentProperty = dependentProperty;
         PossibleDependantPropertyValues = possibleDependantPropertyValues;
     }
 
-    protected override ValidationResult IsValid(object? value, ValidationContext validationContext)
+    protected override bool IsValid(object? value, object? dependentPropertyValue)
     {
-        var result = ValidationResult.Success!;
-        if (value == null)
-            return result;
-
-        if (validationContext.ObjectType.GetProperty(DependentProperty) is not { } dependentPropertyInfo)
-        {
-            throw new InvalidOperationException($"The dependent property '{DependentProperty}' does not exist");
-        }
-
-        if (dependentPropertyInfo.GetValue(validationContext.ObjectInstance, null) is not IEnumerable enumerable)
+        if(value == null)
+            return true;
+        
+        if (dependentPropertyValue is not IEnumerable enumerable)
         {
             throw new InvalidOperationException(
                 $"The dependent property '{DependentProperty}' must be of type IEnumerable");
@@ -35,22 +27,17 @@ public class AvailableIfContainsAttribute : ValidationAttribute
 
         if (dependentValues.All(x => !PossibleDependantPropertyValues.Any(val => val.Equals(x))))
         {
-            var memberNames = validationContext.MemberName != null
-                ? new[] { validationContext.MemberName }
-                : null;
-
-            result = new ValidationResult(FormatErrorMessage(value, validationContext),
-                memberNames);
+            return false;
         }
 
-
-        return result;
+        return true;
     }
 
-    private string FormatErrorMessage(object value, ValidationContext validationContext)
+    protected override string FormatErrorMessage(object? value, object? dependentPropertyValue,
+        DependentPropertyValidationContext validationContext)
     {
         return string.Format(ErrorMessageString, DependentProperty, FormatPossibleDependantPropertyValues(),
-            validationContext.DisplayName, value);
+            validationContext.ValidationContext.DisplayName, value);
     }
 
     private string FormatPossibleDependantPropertyValues()

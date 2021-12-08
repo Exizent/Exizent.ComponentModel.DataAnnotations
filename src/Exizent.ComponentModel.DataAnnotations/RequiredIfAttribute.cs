@@ -1,45 +1,36 @@
-﻿using System.Reflection;
+﻿namespace Exizent.ComponentModel.DataAnnotations;
 
-namespace Exizent.ComponentModel.DataAnnotations;
-
-public class RequiredIfAttribute : ValidationAttribute
+public class RequiredIfAttribute : DependantPropertyBaseAttribute
 {
-    private readonly RequiredAttribute _innerAttribute;
     private readonly object? _requiredValue;
-    private readonly string _dependentProperty;
+    private readonly RequiredAttribute _innerAttribute = new();
 
     public RequiredIfAttribute(string dependentProperty, object? requiredValue)
+        : base(dependentProperty, "The field {0} is required if {1} is {2}.")
     {
-        _innerAttribute = new RequiredAttribute();
-        _dependentProperty = dependentProperty;
         _requiredValue = requiredValue;
     }
 
-    protected override ValidationResult IsValid(object? value, ValidationContext validationContext)
+    protected override bool IsValid(object? value, object? dependentPropertyValue)
     {
-        var dependentProperty = validationContext.ObjectType.GetRuntimeProperty(_dependentProperty);
-        
-        var dependentPropertyValue = dependentProperty.GetValue(validationContext.ObjectInstance, null);
-        
         return Equals(_requiredValue, dependentPropertyValue)
-            ? ValidateInnerAttribute(value, validationContext)
-            : ValidationResult.Success!;
+            ? ValidateInnerAttribute(value)
+            : true;
+        
+    }
+    
+    private bool ValidateInnerAttribute(object? value)
+    {
+        return _innerAttribute.IsValid(value);
     }
 
-    private ValidationResult ValidateInnerAttribute(object? value, ValidationContext validationContext)
+    protected override string FormatErrorMessage(object? value, object? dependentPropertyValue,
+        DependentPropertyValidationContext validationContext)
     {
-        if (!_innerAttribute.IsValid(value))
-        {
-            return new ValidationResult(FormatErrorMessage(validationContext),
-                new[] { validationContext.MemberName! });
-        }
-
-        return ValidationResult.Success!;
-    }
-
-    private string FormatErrorMessage(ValidationContext validationContext)
-    {
-        return $"The field {validationContext.DisplayName} is required if {_dependentProperty} is {FormatRequiredValue()}.";
+        return string.Format(ErrorMessageString, 
+            validationContext.ValidationContext.DisplayName,
+            validationContext.GetDependentPropertyDisplayName(),
+            FormatRequiredValue());
     }
 
     private string FormatRequiredValue()
