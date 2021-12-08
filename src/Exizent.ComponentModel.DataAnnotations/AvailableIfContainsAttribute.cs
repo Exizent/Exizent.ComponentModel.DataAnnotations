@@ -30,7 +30,8 @@ public class AvailableIfContainsAttribute : ValidationAttribute
 
         if (dependentPropertyInfo.GetValue(validationContext.ObjectInstance, null) is not IEnumerable enumerable)
         {
-            throw new InvalidOperationException($"The dependent property '{DependentProperty}' must be of type IEnumerable");
+            throw new InvalidOperationException(
+                $"The dependent property '{DependentProperty}' must be of type IEnumerable");
         }
 
         var dependentValues = enumerable.Cast<object>().ToArray();
@@ -51,21 +52,17 @@ public class AvailableIfContainsAttribute : ValidationAttribute
 
     private string FormatErrorMessage(object value, ValidationContext validationContext)
     {
-        return string.Format(ErrorMessageString, DependentProperty, FormatDependantPropertyRequiredValues(),
+        return string.Format(ErrorMessageString, DependentProperty, FormatPossibleDependantPropertyValues(),
             validationContext.DisplayName, value);
     }
 
-    private string FormatDependantPropertyRequiredValues()
+    private string FormatPossibleDependantPropertyValues()
     {
-        var commaValued = PossibleDependantPropertyValues.Take(PossibleDependantPropertyValues.Length - 1);
+        if (PossibleDependantPropertyValues is { Length: 1 })
+            return PossibleDependantPropertyValues[0].ToString();
 
-        var formatted = string.Join(", ", commaValued);
+        var formatted = string.Join(", ", PossibleDependantPropertyValues[..^1]);
 
-        if (string.IsNullOrEmpty(formatted))
-        {
-            return PossibleDependantPropertyValues.Single().ToString();
-        }
-
-        return formatted + " or " + PossibleDependantPropertyValues.Last();
+        return formatted + " or " + PossibleDependantPropertyValues[^1];
     }
 }
