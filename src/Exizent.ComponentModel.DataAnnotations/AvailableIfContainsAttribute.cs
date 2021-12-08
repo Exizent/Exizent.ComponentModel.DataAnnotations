@@ -7,7 +7,7 @@ public class AvailableIfContainsAttribute : DependantPropertyBaseAttribute
     public object[] PossibleDependantPropertyValues { get; }
 
     public AvailableIfContainsAttribute(string dependentProperty, params object[] possibleDependantPropertyValues) :
-        base(dependentProperty, "The {0} field must contain {1} to assign {2} to {3}.")
+        base(dependentProperty, "The field {0} must contain {1} to assign {2} to {3}.")
     {
         PossibleDependantPropertyValues = possibleDependantPropertyValues;
     }

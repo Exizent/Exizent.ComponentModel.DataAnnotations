@@ -57,7 +57,7 @@ public class AvailableIfAttributeTests
 
         using var _ = new AssertionScope();
         isValid.Should().BeFalse();
-        results[0].ErrorMessage.Should().Be($"{nameof(BooleanTestModel.BoolProp)} must be set to {true} to assign {model.AvailableIfBoolProp} to {nameof(BooleanTestModel.AvailableIfBoolProp)}");
+        results[0].ErrorMessage.Should().Be($"The field {nameof(BooleanTestModel.BoolProp)} must be set to {true} to assign {model.AvailableIfBoolProp} to {nameof(BooleanTestModel.AvailableIfBoolProp)}");
         results[0].MemberNames.Should().OnlyContain(x => x == nameof(BooleanTestModel.AvailableIfBoolProp));
     }
 
@@ -88,7 +88,7 @@ public class AvailableIfAttributeTests
 
         using var _ = new AssertionScope();
         isValid.Should().BeFalse();
-        results[0].ErrorMessage.Should().Be($"{nameof(BooleanTestModel.BoolProp)} must be set to null to assign {model.AvailableIfBoolProp} to {nameof(BooleanTestModel.AvailableIfBoolProp)}");
+        results[0].ErrorMessage.Should().Be($"The field {nameof(BooleanTestModel.BoolProp)} must be set to null to assign {model.AvailableIfBoolProp} to {nameof(BooleanTestModel.AvailableIfBoolProp)}");
         results[0].MemberNames.Should().OnlyContain(x => x == nameof(BooleanTestModel.AvailableIfBoolProp));
     }
 }

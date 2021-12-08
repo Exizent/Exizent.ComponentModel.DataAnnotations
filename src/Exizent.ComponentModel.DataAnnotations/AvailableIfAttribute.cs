@@ -6,7 +6,7 @@ public class AvailableIfAttribute : DependantPropertyBaseAttribute
     public object? DependantPropertyRequiredValue { get; }
 
     public AvailableIfAttribute(string dependentProperty, object? dependantPropertyRequiredValue)
-        :base(dependentProperty, "{0} must be set to {1} to assign {2} to {3}")
+        :base(dependentProperty, "The field {0} must be set to {1} to assign {2} to {3}")
     {
         DependantPropertyRequiredValue = dependantPropertyRequiredValue;
     }
