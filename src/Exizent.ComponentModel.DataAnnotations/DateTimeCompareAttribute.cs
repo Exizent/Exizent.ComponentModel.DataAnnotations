@@ -20,6 +20,6 @@ public class DateTimeCompareAttribute : DateTimeCompareBaseAttribute
         return (DateTime?)otherPropertyInfo.GetValue(validationContext.ObjectInstance, null);
     }
     
-    protected override string FormatErrorMessage(ValidationContext validationContext)
-        => $"The field {validationContext.DisplayName} must be {FormatEqualityCondition()} {_otherProperty}.";
+    protected override string FormatErrorMessage(ValidationContext validationContext, DateTime? dateTime)
+        => string.Format(ErrorMessageString, validationContext.DisplayName, FormatEqualityCondition(), _otherProperty);
 }

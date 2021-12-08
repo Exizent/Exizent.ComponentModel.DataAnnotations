@@ -119,7 +119,7 @@ public class AvailableIfContainsAttributeTests
             isValid.Should().BeFalse();
             results[0].ErrorMessage.Should()
                 .Be(
-                    $"The {nameof(SinglePossibleDependentValueTestModel.DependentValues)} field must contain Value2 to assign {nameof(SinglePossibleDependentValueTestModel.Value)} to {model.Value}.");
+                    $"The field {nameof(SinglePossibleDependentValueTestModel.DependentValues)} must contain Value2 to assign {nameof(SinglePossibleDependentValueTestModel.Value)} to {model.Value}.");
             results[0].MemberNames.Should().OnlyContain(x => x == nameof(SinglePossibleDependentValueTestModel.Value));
         }
     }
@@ -190,7 +190,7 @@ public class AvailableIfContainsAttributeTests
             isValid.Should().BeFalse();
             results[0].ErrorMessage.Should()
                 .Be(
-                    $"The {nameof(TwoPossibleDependentValueTestModel.DependentValues)} field must contain {PossibleDependentValue1} or {PossibleDependentValue2} to assign {nameof(TwoPossibleDependentValueTestModel.Value)} to {model.Value}.");
+                    $"The field {nameof(TwoPossibleDependentValueTestModel.DependentValues)} must contain {PossibleDependentValue1} or {PossibleDependentValue2} to assign {nameof(TwoPossibleDependentValueTestModel.Value)} to {model.Value}.");
             results[0].MemberNames.Should().OnlyContain(x => x == nameof(TwoPossibleDependentValueTestModel.Value));
         }
     }
@@ -225,7 +225,7 @@ public class AvailableIfContainsAttributeTests
             isValid.Should().BeFalse();
             results[0].ErrorMessage.Should()
                 .Be(
-                    $"The {nameof(ThreePossibleDependentValueTestModel.DependentValues)} field must contain {PossibleDependentValue1}, {PossibleDependentValue2} or {PossibleDependentValue2} to assign {nameof(ThreePossibleDependentValueTestModel.Value)} to {model.Value}.");
+                    $"The field {nameof(ThreePossibleDependentValueTestModel.DependentValues)} must contain {PossibleDependentValue1}, {PossibleDependentValue2} or {PossibleDependentValue2} to assign {nameof(ThreePossibleDependentValueTestModel.Value)} to {model.Value}.");
             results[0].MemberNames.Should().OnlyContain(x => x == nameof(ThreePossibleDependentValueTestModel.Value));
         }
     }

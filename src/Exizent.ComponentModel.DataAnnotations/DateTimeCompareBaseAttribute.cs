@@ -4,7 +4,9 @@ public abstract class DateTimeCompareBaseAttribute : ValidationAttribute
 {
     private readonly EqualityCondition _equalityCondition;
 
-    protected DateTimeCompareBaseAttribute(EqualityCondition equalityCondition)
+    protected DateTimeCompareBaseAttribute(EqualityCondition equalityCondition,
+        string errorMessage = "The field {0} must be {1} {2}.")
+        : base(errorMessage)
     {
         _equalityCondition = equalityCondition;
     }
@@ -17,9 +19,9 @@ public abstract class DateTimeCompareBaseAttribute : ValidationAttribute
 
         var other = GetOtherDateTimeValue(validationContext);
 
-        if(!Enum.IsDefined(typeof(EqualityCondition), _equalityCondition))
+        if (!Enum.IsDefined(typeof(EqualityCondition), _equalityCondition))
             throw new InvalidOperationException($"Invalid equality condition {_equalityCondition}");
-        
+
 
         if (!Compare(current, other))
         {
@@ -28,14 +30,15 @@ public abstract class DateTimeCompareBaseAttribute : ValidationAttribute
                 : null;
 
             result = new ValidationResult(
-                FormatErrorMessage(validationContext),
+                FormatErrorMessage(validationContext, other),
                 memberNames);
         }
-    
+
         return result;
     }
 
-    protected abstract string FormatErrorMessage(ValidationContext validationContext);
+    protected virtual string FormatErrorMessage(ValidationContext validationContext, DateTime? dateTime)
+        => string.Format(ErrorMessageString, validationContext.DisplayName, FormatEqualityCondition(), dateTime);
 
     protected abstract DateTime? GetOtherDateTimeValue(ValidationContext validationContext);
 
@@ -55,7 +58,7 @@ public abstract class DateTimeCompareBaseAttribute : ValidationAttribute
     {
         if (current is null || other is null)
             return true;
-        
+
         return _equalityCondition switch
         {
             EqualityCondition.Equals => current == other,
