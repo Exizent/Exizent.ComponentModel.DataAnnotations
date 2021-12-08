@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Exizent.ComponentModel.DataAnnotations;
+﻿namespace Exizent.ComponentModel.DataAnnotations;
 
 public class PostcodeAttribute : DataTypeRegularExpressionAttribute
 {
