@@ -23,4 +23,10 @@
     <ItemGroup>
       <ProjectReference Include="..\..\src\Exizent.ComponentModel.DataAnnotations\Exizent.ComponentModel.DataAnnotations.csproj" />
     </ItemGroup>
+
+    <ItemGroup>
+        <Using Include="FluentAssertions" />
+        <Using Include="FluentAssertions.Execution" />
+        <Using Include="Xunit" />
+    </ItemGroup>
 </Project>
