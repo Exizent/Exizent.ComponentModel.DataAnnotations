@@ -9,6 +9,14 @@ public class RequiredIfAttributeTests
         [RequiredIf(nameof(Dependency), TestEnum.TestOne)]
         public string? Value { get; set; }
     }
+    
+    class NullTestClass
+    {
+        public TestEnum? Dependency { get; set; }
+
+        [RequiredIf(nameof(Dependency), null)]
+        public string? Value { get; set; }
+    }
 
     enum TestEnum
     {
@@ -16,6 +24,8 @@ public class RequiredIfAttributeTests
         TestOne,
         TestTwo
     }
+    
+    
     
     
     [Fact]
@@ -53,6 +63,43 @@ public class RequiredIfAttributeTests
         using var _ = new AssertionScope();
         isValid.Should().BeFalse();
         results[0].ErrorMessage.Should().Be($"The field {nameof(TestClass.Value)} is required if {nameof(TestClass.Dependency)} is {TestEnum.TestOne}.");
+        results[0].MemberNames.Should().OnlyContain(x => x == nameof(TestClass.Value));
+    }
+    
+    [Fact]
+    public void ShouldBeValidWhenDependencyDoesNotMatchRequiredNullValue()
+    {
+        var model = new NullTestClass
+        {
+            Dependency = TestEnum.Default
+        };
+
+        var context = new ValidationContext(model);
+        var results = new List<ValidationResult>();
+            
+        var isValid = Validator.TryValidateObject(model, context, results, true);
+
+        using var _ = new AssertionScope();
+        isValid.Should().BeTrue();
+        results.Should().BeEmpty();
+    }
+
+
+    [Fact]
+    public void ValidationFailsIfDependentEnumValueMatchesRequiredIfNullValue()
+    {
+        var model = new NullTestClass
+        {
+            Dependency = null
+        };
+        var context = new ValidationContext(model);
+        var results = new List<ValidationResult>();
+            
+        var isValid = Validator.TryValidateObject(model, context, results, true);
+
+        using var _ = new AssertionScope();
+        isValid.Should().BeFalse();
+        results[0].ErrorMessage.Should().Be($"The field {nameof(TestClass.Value)} is required if {nameof(TestClass.Dependency)} is null.");
         results[0].MemberNames.Should().OnlyContain(x => x == nameof(TestClass.Value));
     }
 

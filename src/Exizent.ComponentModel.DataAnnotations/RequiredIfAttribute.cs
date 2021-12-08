@@ -5,10 +5,10 @@ namespace Exizent.ComponentModel.DataAnnotations;
 public class RequiredIfAttribute : ValidationAttribute
 {
     private readonly RequiredAttribute _innerAttribute;
-    private readonly object _requiredValue;
+    private readonly object? _requiredValue;
     private readonly string _dependentProperty;
 
-    public RequiredIfAttribute(string dependentProperty, object requiredValue)
+    public RequiredIfAttribute(string dependentProperty, object? requiredValue)
     {
         _innerAttribute = new RequiredAttribute();
         _dependentProperty = dependentProperty;
@@ -18,9 +18,10 @@ public class RequiredIfAttribute : ValidationAttribute
     protected override ValidationResult IsValid(object? value, ValidationContext validationContext)
     {
         var dependentProperty = validationContext.ObjectType.GetRuntimeProperty(_dependentProperty);
+        
         var dependentPropertyValue = dependentProperty.GetValue(validationContext.ObjectInstance, null);
         
-        return _requiredValue.Equals(dependentPropertyValue)
+        return Equals(_requiredValue, dependentPropertyValue)
             ? ValidateInnerAttribute(value, validationContext)
             : ValidationResult.Success!;
     }
@@ -29,10 +30,20 @@ public class RequiredIfAttribute : ValidationAttribute
     {
         if (!_innerAttribute.IsValid(value))
         {
-            return new ValidationResult($"The field {validationContext.DisplayName} is required if {_dependentProperty} is {_requiredValue}.",
+            return new ValidationResult(FormatErrorMessage(validationContext),
                 new[] { validationContext.MemberName! });
         }
 
         return ValidationResult.Success!;
+    }
+
+    private string FormatErrorMessage(ValidationContext validationContext)
+    {
+        return $"The field {validationContext.DisplayName} is required if {_dependentProperty} is {FormatRequiredValue()}.";
+    }
+
+    private string FormatRequiredValue()
+    {
+        return _requiredValue?.ToString() ?? "null";
     }
 }
