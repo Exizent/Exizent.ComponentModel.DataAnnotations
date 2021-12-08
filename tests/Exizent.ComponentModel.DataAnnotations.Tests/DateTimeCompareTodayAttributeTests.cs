@@ -1,8 +1,4 @@
-﻿using FluentAssertions;
-using FluentAssertions.Execution;
-using Xunit;
-
-namespace Exizent.ComponentModel.DataAnnotations.Tests;
+﻿namespace Exizent.ComponentModel.DataAnnotations.Tests;
 
 public class DateTimeCompareTodayAttributeTests
 {
