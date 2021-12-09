@@ -58,14 +58,30 @@ public class RequiredIfContainsAttributeTests
 
     public class SingleRequiredDependentValueTests
     {
-        const TestEnum RequiredDependentValue = TestEnum.Value2;
+        const TestEnum RequiredDependentValue2 = TestEnum.Value2;
 
         class SingleRequiredDependentValueTestModel
         {
             public IEnumerable<TestEnum>? DependentValues { get; set; }
 
-            [RequiredIfContains(nameof(DependentValues), RequiredDependentValue)]
+            [RequiredIfContains(nameof(DependentValues), RequiredDependentValue2)]
             public string? Value { get; set; }
+        }
+
+        [Fact]
+        public void ShouldBeValidForNullDependentPropertyValueAndNullValue()
+        {
+            var model = new SingleRequiredDependentValueTestModel
+            {
+                DependentValues = null,
+                Value = null
+            };
+
+            var (results, isValid) = ValidateModel(model);
+
+            using var _ = new AssertionScope();
+            isValid.Should().BeTrue();
+            results.Should().BeEmpty();
         }
 
         [Fact]
@@ -85,10 +101,10 @@ public class RequiredIfContainsAttributeTests
         }
 
         [Theory]
-        [InlineData(RequiredDependentValue)]
-        [InlineData(TestEnum.Value1, RequiredDependentValue)]
-        [InlineData(RequiredDependentValue, TestEnum.Value2)]
-        [InlineData(TestEnum.Value1, RequiredDependentValue, TestEnum.Value3)]
+        [InlineData(RequiredDependentValue2)]
+        [InlineData(TestEnum.Value1, RequiredDependentValue2)]
+        [InlineData(RequiredDependentValue2, TestEnum.Value2)]
+        [InlineData(TestEnum.Value1, RequiredDependentValue2, TestEnum.Value3)]
         public void ShouldBeValidForRequiredDependentValueAndSetValue(params TestEnum[] extraValues)
         {
             var model = new SingleRequiredDependentValueTestModel
@@ -105,10 +121,30 @@ public class RequiredIfContainsAttributeTests
         }
 
         [Theory]
-        [InlineData(RequiredDependentValue)]
-        [InlineData(TestEnum.Value1, RequiredDependentValue)]
-        [InlineData(RequiredDependentValue, TestEnum.Value2)]
-        [InlineData(TestEnum.Value1, RequiredDependentValue, TestEnum.Value3)]
+        [InlineData()]
+        [InlineData(TestEnum.Value1)]
+        [InlineData(TestEnum.Value3)]
+        [InlineData(TestEnum.Value1, TestEnum.Value3, TestEnum.Value4)]
+        public void ShouldBeValidForNoneRequiredDependentValueAndNullValue(params TestEnum[] extraValues)
+        {
+            var model = new SingleRequiredDependentValueTestModel
+            {
+                DependentValues = extraValues,
+                Value = null
+            };
+
+            var (results, isValid) = ValidateModel(model);
+
+            using var _ = new AssertionScope();
+            isValid.Should().BeTrue();
+            results.Should().BeEmpty();
+        }
+
+        [Theory]
+        [InlineData(RequiredDependentValue2)]
+        [InlineData(TestEnum.Value1, RequiredDependentValue2)]
+        [InlineData(RequiredDependentValue2, TestEnum.Value3)]
+        [InlineData(TestEnum.Value1, RequiredDependentValue2, TestEnum.Value3)]
         public void ShouldBeInvalidWhenRequiredDependentValueAndValueIsNull(params TestEnum[] dependentValues)
         {
             var model = new SingleRequiredDependentValueTestModel
@@ -123,7 +159,7 @@ public class RequiredIfContainsAttributeTests
             isValid.Should().BeFalse();
             results[0].ErrorMessage.Should()
                 .Be(
-                    $"The field {nameof(SingleRequiredDependentValueTestModel.DependentValues)} must contain Value2 to assign {nameof(SingleRequiredDependentValueTestModel.Value)} to {model.Value}.");
+                    $"The field {nameof(SingleRequiredDependentValueTestModel.Value)} is required when {nameof(SingleRequiredDependentValueTestModel.DependentValues)} contains {RequiredDependentValue2}.");
             results[0].MemberNames.Should().OnlyContain(x => x == nameof(SingleRequiredDependentValueTestModel.Value));
         }
     }
@@ -161,18 +197,15 @@ public class RequiredIfContainsAttributeTests
         }
 
         [Theory]
-        [InlineData(TestEnum.Value1)]
-        [InlineData(RequiredDependentValue2)]
-        [InlineData(RequiredDependentValue3)]
-        [InlineData(TestEnum.Value4)]
-        [InlineData(TestEnum.Value1, RequiredDependentValue2, TestEnum.Value4)]
-        [InlineData(TestEnum.Value1, RequiredDependentValue3, TestEnum.Value4)]
-        public void ShouldBeInvalidWhenRequiredDependentValuesIsNotContained(params TestEnum[] dependentValues)
+        [InlineData(TestEnum.Value1, RequiredDependentValue2, RequiredDependentValue3)]
+        [InlineData(RequiredDependentValue2, RequiredDependentValue3)]
+        [InlineData(RequiredDependentValue2, RequiredDependentValue3, TestEnum.Value4)]
+        public void ShouldBeInvalidWhenContainsRequiredDependentValuesAndValueIsNull(params TestEnum[] dependentValues)
         {
             var model = new RequiredDependentValueTestModel
             {
                 DependentValues = dependentValues,
-                Value = Guid.NewGuid().ToString()
+                Value = null
             };
 
             var (results, isValid) = ValidateModel(model);
@@ -181,7 +214,7 @@ public class RequiredIfContainsAttributeTests
             isValid.Should().BeFalse();
             results[0].ErrorMessage.Should()
                 .Be(
-                    $"The field {nameof(RequiredDependentValueTestModel.DependentValues)} must contain {RequiredDependentValue2} and {RequiredDependentValue3} to assign {nameof(RequiredDependentValueTestModel.Value)} to {model.Value}.");
+                    $"The field {nameof(RequiredDependentValueTestModel.Value)} is required when {nameof(RequiredDependentValueTestModel.DependentValues)} contains {RequiredDependentValue2} and {RequiredDependentValue3}.");
             results[0].MemberNames.Should().OnlyContain(x => x == nameof(RequiredDependentValueTestModel.Value));
         }
     }
@@ -202,12 +235,12 @@ public class RequiredIfContainsAttributeTests
         }
 
         [Fact]
-        public void ShouldBeInvalidWhenRequiredDependentValuesIsNotContained()
+        public void ShouldBeInvalidWhenHasRequiredDependentValuesAndValueIsNull()
         {
             var model = new ThreeRequiredDependentValueTestModel
             {
-                DependentValues = Array.Empty<TestEnum>(),
-                Value = Guid.NewGuid().ToString()
+                DependentValues = new[] { RequiredDependentValue2, RequiredDependentValue3, RequiredDependentValue4 },
+                Value = null
             };
 
             var (results, isValid) = ValidateModel(model);
@@ -216,7 +249,7 @@ public class RequiredIfContainsAttributeTests
             isValid.Should().BeFalse();
             results[0].ErrorMessage.Should()
                 .Be(
-                    $"The field {nameof(ThreeRequiredDependentValueTestModel.DependentValues)} must contain {RequiredDependentValue2}, {RequiredDependentValue3} and {RequiredDependentValue4} to assign {nameof(ThreeRequiredDependentValueTestModel.Value)} to {model.Value}.");
+                    $"The field {nameof(ThreeRequiredDependentValueTestModel.Value)} is required when {nameof(ThreeRequiredDependentValueTestModel.DependentValues)} contains {RequiredDependentValue2}, {RequiredDependentValue3} and {RequiredDependentValue4}.");
             results[0].MemberNames.Should().OnlyContain(x => x == nameof(ThreeRequiredDependentValueTestModel.Value));
         }
     }
