@@ -8,7 +8,7 @@ public class RequiredIfContainsAttribute : DependantPropertyBaseAttribute
     private readonly RequiredAttribute _innerAttribute = new();
 
     public RequiredIfContainsAttribute(string dependentProperty, params object[] dependantPropertyRequiredValues)
-        : base(dependentProperty, "The field {0} must contain {1} to assign {2} to {3}.")
+        : base(dependentProperty, "The field {0} is required when {1} contains {2}.")
     {
         DependantPropertyRequiredValues = dependantPropertyRequiredValues;
     }
@@ -26,12 +26,15 @@ public class RequiredIfContainsAttribute : DependantPropertyBaseAttribute
 
         var dependentValues = enumerable.Cast<object>().ToArray();
 
+        if(dependentValues.Length == 0)
+            return true;
+        
         if(DependantPropertyRequiredValues.All(x => dependentValues.Any(val => Equals(val, x))))
         {
             return ValidateInnerAttribute(value);
         }
 
-        return false;
+        return true;
     }
 
     private bool ValidateInnerAttribute(object? value)
@@ -42,8 +45,7 @@ public class RequiredIfContainsAttribute : DependantPropertyBaseAttribute
     protected override string FormatErrorMessage(object? value, object? dependentPropertyValue,
         DependentPropertyValidationContext validationContext)
     {
-        return string.Format(ErrorMessageString, DependentProperty, FormatPossibleDependantPropertyValues(),
-            validationContext.ValidationContext.DisplayName, value);
+        return string.Format(ErrorMessageString, validationContext.ValidationContext.DisplayName, DependentProperty, FormatPossibleDependantPropertyValues());
     }
 
     private string FormatPossibleDependantPropertyValues()
