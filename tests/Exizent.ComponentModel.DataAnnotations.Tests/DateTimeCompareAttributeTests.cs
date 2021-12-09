@@ -5,22 +5,22 @@ public class DateTimeCompareAttributeTests
     class TestModel
     {
         public DateTime? Value { get; set; }
-        
+
         [DateTimeCompareAttribute(nameof(Value), EqualityCondition.Equals)]
         public DateTime? EqualsValue { get; set; }
-        
+
         [DateTimeCompareAttribute(nameof(Value), EqualityCondition.NotEquals)]
         public DateTime? NotEqualsValue { get; set; }
-        
+
         [DateTimeCompareAttribute(nameof(Value), EqualityCondition.GreaterThan)]
         public DateTime? GreaterThanValue { get; set; }
-        
+
         [DateTimeCompareAttribute(nameof(Value), EqualityCondition.GreaterThanOrEquals)]
         public DateTime? GreaterThanOrEqualsValue { get; set; }
-        
+
         [DateTimeCompareAttribute(nameof(Value), EqualityCondition.LessThan)]
         public DateTime? LessThanValue { get; set; }
-        
+
         [DateTimeCompareAttribute(nameof(Value), EqualityCondition.LessThanOrEquals)]
         public DateTime? LessThanOrEqualsValue { get; set; }
     }
@@ -30,14 +30,14 @@ public class DateTimeCompareAttributeTests
         [DateTimeCompareAttribute("PropertyThatDoesNotExist", EqualityCondition.Equals)]
         public DateTime? Value { get; set; }
     }
-    
+
     class InvalidEqualityConditionTestClass
     {
         public DateTime? OtherValue { get; set; }
         [DateTimeCompareAttribute(nameof(OtherValue), (EqualityCondition)int.MaxValue)]
         public DateTime? Value { get; set; }
     }
-    
+
     private static (List<ValidationResult> results, bool isValid) ValidateModel<TModel>(TModel model) where TModel : notnull
     {
         var context = new ValidationContext(model);
@@ -68,7 +68,7 @@ public class DateTimeCompareAttributeTests
         isValid.Should().BeTrue();
         results.Should().BeEmpty();
     }
-    
+
     [Fact]
     public void ShouldBeValidForNullPropertyValue()
     {
@@ -85,7 +85,7 @@ public class DateTimeCompareAttributeTests
         isValid.Should().BeTrue();
         results.Should().BeEmpty();
     }
-    
+
     [Fact]
     public void ShouldThrowInvalidOperationExceptionForInvalidOtherProperty()
     {
@@ -100,13 +100,13 @@ public class DateTimeCompareAttributeTests
             .Throw<InvalidOperationException>()
             .WithMessage("The other property '*' does not exist");
     }
-    
-   [Fact]
+
+    [Fact]
     public void ShouldThrowArgumentExceptionForInvalidEqualityCondition()
     {
         var model = new InvalidEqualityConditionTestClass
         {
-            OtherValue = DateTime.Today, 
+            OtherValue = DateTime.Today,
             Value = DateTime.Today
         };
 
@@ -116,6 +116,29 @@ public class DateTimeCompareAttributeTests
             .Throw<InvalidOperationException>()
             .WithMessage("Invalid equality condition *");
     }
+
+    [Theory]
+    [InlineData(EqualityCondition.Equals)]
+    [InlineData(EqualityCondition.NotEquals)]
+    [InlineData(EqualityCondition.GreaterThan)]
+    [InlineData(EqualityCondition.GreaterThanOrEquals)]
+    [InlineData(EqualityCondition.LessThan)]
+    [InlineData(EqualityCondition.LessThanOrEquals)]
+    public void ShouldExposeEqualityCondition(EqualityCondition condition)
+    {
+        var attribute = new DateTimeCompareAttribute("Test", condition);
+
+        attribute.EqualityCondition.Should().Be(condition);
+    }
+
+    [Fact]
+    public void ShouldExposeOtherPropertyName()
+    {
+        var attribute = new DateTimeCompareAttribute("Test", EqualityCondition.Equals);
+
+        attribute.OtherProperty.Should().Be("Test");
+    }
+
     public class EqualsEqualityConditionTests
     {
         [Fact]
@@ -145,7 +168,7 @@ public class DateTimeCompareAttributeTests
             results[0].MemberNames.Should().BeEquivalentTo(nameof(TestModel.EqualsValue));
         }
     }
-    
+
     public class NotEqualsEqualityConditionTests
     {
         [Fact]
@@ -175,7 +198,7 @@ public class DateTimeCompareAttributeTests
             results[0].MemberNames.Should().BeEquivalentTo(nameof(TestModel.NotEqualsValue));
         }
     }
-    
+
     public class GreaterThanEqualityConditionTests
     {
         [Theory]
@@ -200,7 +223,7 @@ public class DateTimeCompareAttributeTests
         {
             var today = DateTime.Today;
             var model = new TestModel { Value = today, GreaterThanValue = today.AddSeconds(secondsToAdd) };
-           
+
             var (results, isValid) = ValidateModel(model);
 
             using var _ = new AssertionScope();
@@ -210,7 +233,7 @@ public class DateTimeCompareAttributeTests
             results[0].MemberNames.Should().BeEquivalentTo(nameof(TestModel.GreaterThanValue));
         }
     }
-    
+
     public class GreaterThanOrEqualsEqualityConditionTests
     {
         [Theory]
@@ -235,7 +258,7 @@ public class DateTimeCompareAttributeTests
         {
             var today = DateTime.Today;
             var model = new TestModel { Value = today, GreaterThanOrEqualsValue = today.AddSeconds(secondsToAdd) };
-            
+
             var (results, isValid) = ValidateModel(model);
 
             using var _ = new AssertionScope();
@@ -245,7 +268,7 @@ public class DateTimeCompareAttributeTests
             results[0].MemberNames.Should().BeEquivalentTo(nameof(TestModel.GreaterThanOrEqualsValue));
         }
     }
-    
+
     public class LessThanEqualityConditionTests
     {
         [Theory]
@@ -270,7 +293,7 @@ public class DateTimeCompareAttributeTests
         {
             var today = DateTime.Today;
             var model = new TestModel { Value = today, LessThanValue = today.AddSeconds(secondsToAdd) };
-           
+
             var (results, isValid) = ValidateModel(model);
 
             using var _ = new AssertionScope();
@@ -280,7 +303,7 @@ public class DateTimeCompareAttributeTests
             results[0].MemberNames.Should().BeEquivalentTo(nameof(TestModel.LessThanValue));
         }
     }
-    
+
     public class LessThanOrEqualsEqualityConditionTests
     {
         [Theory]
@@ -305,7 +328,7 @@ public class DateTimeCompareAttributeTests
         {
             var today = DateTime.Today;
             var model = new TestModel { Value = today, LessThanOrEqualsValue = today.AddSeconds(secondsToAdd) };
-            
+
             var (results, isValid) = ValidateModel(model);
 
             using var _ = new AssertionScope();

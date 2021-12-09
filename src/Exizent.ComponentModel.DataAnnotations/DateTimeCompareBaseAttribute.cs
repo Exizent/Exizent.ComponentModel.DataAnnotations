@@ -2,14 +2,14 @@ namespace Exizent.ComponentModel.DataAnnotations;
 
 public abstract class DateTimeCompareBaseAttribute : ValidationAttribute
 {
-    private readonly EqualityCondition _equalityCondition;
-
     protected DateTimeCompareBaseAttribute(EqualityCondition equalityCondition,
         string errorMessage = "The field {0} must be {1} {2}.")
         : base(errorMessage)
     {
-        _equalityCondition = equalityCondition;
+        EqualityCondition = equalityCondition;
     }
+
+    public EqualityCondition EqualityCondition { get; }
 
     protected override ValidationResult IsValid(object? value, ValidationContext validationContext)
     {
@@ -19,8 +19,8 @@ public abstract class DateTimeCompareBaseAttribute : ValidationAttribute
 
         var other = GetOtherDateTimeValue(validationContext);
 
-        if (!Enum.IsDefined(typeof(EqualityCondition), _equalityCondition))
-            throw new InvalidOperationException($"Invalid equality condition {_equalityCondition}");
+        if (!Enum.IsDefined(typeof(EqualityCondition), EqualityCondition))
+            throw new InvalidOperationException($"Invalid equality condition {EqualityCondition}");
 
 
         if (!Compare(current, other))
@@ -38,12 +38,12 @@ public abstract class DateTimeCompareBaseAttribute : ValidationAttribute
     }
 
     protected virtual string FormatErrorMessage(ValidationContext validationContext, DateTime? dateTime)
-        => string.Format(ErrorMessageString, validationContext.DisplayName, FormatEqualityCondition(), dateTime);
+        => string.Format(ErrorMessageString, validationContext.DisplayName, FormatEqualityCondition(EqualityCondition), dateTime);
 
     protected abstract DateTime? GetOtherDateTimeValue(ValidationContext validationContext);
 
-    protected string FormatEqualityCondition() =>
-        _equalityCondition switch
+    public static string FormatEqualityCondition(EqualityCondition condition) =>
+        condition switch
         {
             EqualityCondition.Equals => "equal to",
             EqualityCondition.NotEquals => "not equal to",
@@ -59,7 +59,7 @@ public abstract class DateTimeCompareBaseAttribute : ValidationAttribute
         if (current is null || other is null)
             return true;
 
-        return _equalityCondition switch
+        return EqualityCondition switch
         {
             EqualityCondition.Equals => current == other,
             EqualityCondition.NotEquals => current != other,

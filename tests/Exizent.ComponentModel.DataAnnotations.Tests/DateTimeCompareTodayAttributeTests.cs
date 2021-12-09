@@ -64,7 +64,21 @@ public class DateTimeCompareTodayAttributeTests
             .Throw<InvalidOperationException>()
             .WithMessage("Invalid equality condition *");
     }
-    
+
+    [Theory]
+    [InlineData(EqualityCondition.Equals)]
+    [InlineData(EqualityCondition.NotEquals)]
+    [InlineData(EqualityCondition.GreaterThan)]
+    [InlineData(EqualityCondition.GreaterThanOrEquals)]
+    [InlineData(EqualityCondition.LessThan)]
+    [InlineData(EqualityCondition.LessThanOrEquals)]
+    public void ShouldExposeEqualityCondition(EqualityCondition condition)
+    {
+        var attribute = new DateTimeCompareTodayAttribute(condition);
+
+        attribute.EqualityCondition.Should().Be(condition);
+    }
+
     public class EqualsEqualityConditionTests
     {
         [Fact]
