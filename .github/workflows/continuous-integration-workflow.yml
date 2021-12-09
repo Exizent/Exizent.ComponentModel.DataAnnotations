@@ -13,6 +13,9 @@ jobs:
     - uses: actions/checkout@v2
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
+    - name: Run Tests
+      run: |
+        dotnet test ./Exizent.ComponentModel.DataAnnotations.sln
     - name: Docker Build NuGet packages
       run: |
         docker build --build-arg NUGET_PACKAGE_VERSION=${{ env.VERSION }} -f ./src/Exizent.ComponentModel.DataAnnotations/Dockerfile --output ./ .
