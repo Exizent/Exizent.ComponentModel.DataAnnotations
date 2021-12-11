@@ -16,6 +16,11 @@ jobs:
     - name: Docker Build NuGet packages
       run: |
         docker build --build-arg NUGET_PACKAGE_VERSION=${{ env.VERSION }} -f ./src/Exizent.ComponentModel.DataAnnotations/Dockerfile --output ./ .
+    - name: Publish Unit Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: TestResults/**/*.xml
     - name: NuGet.Org push
       if: github.ref == 'refs/heads/main'
       run: |
