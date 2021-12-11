@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="7a1775d4-628f-48d5-a6c7-6ee966f5ed79" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/Exizent.ComponentModel.DataAnnotations/AvailableValuesIfContainsAttribute.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Exizent.ComponentModel.DataAnnotations/ValueFormatter.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/Exizent.ComponentModel.DataAnnotations.Tests/AvailableValuesIfContainsAttributeTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Exizent.ComponentModel.DataAnnotations/AvailableIfContainsAttribute.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Exizent.ComponentModel.DataAnnotations/AvailableIfContainsAttribute.cs" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/aab0dc813918aa9ff552803759773adb7bbb05c4ba1c29166cc69cdc964c9b/ValidationAttribute.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/978fe428eb0e9962560698b4a775bdadea0d266d8d05553686bd06cf8e0806a/ValidationAttributeStore.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/7352000939684f9996d6905899c972ee2d270/68/b30aa2b8/ValidationAttribute.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/ba9d728c935c4ac4969671c9208b6dad83070/ab/f8d6efc4/Enumerable.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/6d118d29b7288c733669a5d6cd0e5df5b1cb411794c087a766fccc87933abb/System.SR.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/8157179792d2b1b4cde638ce82be6e24296e3ebc370ce1b2546868375a524/MemberDescriptor.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/1bdbbd4a57ccc3efa0dddda6794e79244dc1b754a22c89d1f2a91789/Validator.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/1aa09753939e28a72f6cb7b5dbf4a228684deb332ec2be3262b9df2cb87fea/Enum.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/198a6261cebc324728dcc4c178edc5f2894123f711722c80e8557cbfd27651/ThrowHelper.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/78e1ec121bb5e29c73311d30ae1f36ac53661a3e71c982e024f51717a690356/System.SR.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/519d702c2430bd59c968c834a02af06dd74ee174ce53edd4c484d4ac2794a1/ValidationAttribute.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/aedbc2c7614814dbd159d925275c553094dc6c0a5fac7bdfc868e3a29d22963/CompareAttribute.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/b6338c18894a4476c3fe602740105a98287899529749bf6840af5ec481b543a/RequiredAttribute.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/68983e7e748e6d58b719df60daa34fd6611590a63d32f4a6156cb570bc5810/ValidationContext.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/cca54ce680a752c1defe3f26ab12e0702fec28e46f148f37cf83b5cd4563b239/DataTypeAttribute.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/23e31092363db7107ca21367adea927bccc2e7cf2075f9ee398ad1175b8e87/Nullable.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/b629dffeeb771df4a5ac6b2d941636c1a886773bfcb15bf2b954dfbfeb4e5/XUnit2TestFramework.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/d45b947c1884189a3fc7fb3ca6524f5687525c9f1d31f5695b62332de835467/RegularExpressionAttribute.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/3ea01e77be99618395f448b16bd7cc2bd4248bd9e5d8474964b2d97f39c5d74/System.cs" root0="SKIP_HIGHLIGHTING" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="21pN2gvLv5G15wWO7yg74t978H1" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="7a1775d4-628f-48d5-a6c7-6ee966f5ed79" name="Changes" comment="" />
+      <created>1638633864287</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1638633864287</updated>
+      <workItem from="1638633867817" duration="5210000" />
+      <workItem from="1638742440109" duration="2948000" />
+      <workItem from="1638790781383" duration="12642000" />
+      <workItem from="1638868669533" duration="3430000" />
+      <workItem from="1638960566178" duration="34628000" />
+      <workItem from="1639252152248" duration="3254000" />
+    </task>
+    <task id="LOCAL-00001" summary="Adding AvailableIf Attribute and tests">
+      <created>1638745094592</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1638745094592</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Adding AvailableIfContainsAttribute">
+      <created>1638969194674</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1638969194674</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Simplifying the logic within PossibleDependantPropertyValues method">
+      <created>1638970795167</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1638970795167</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Adding in BankAccountNumberAttribute">
+      <created>1638973796834</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1638973796834</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Adding NationalInsuranceNumberAttribute.">
+      <created>1638979922867</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1638979922867</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Adding PhoneNumberAttribute">
+      <created>1638980474885</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1638980474885</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Email is a DataType Email address.">
+      <created>1638982098365</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1638982098365</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Adding PostcodeAttribute">
+      <created>1638982504197</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1638982504197</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Enabling ImplicitUsings and adding the namespace System.ComponentModel.DataAnnotations">
+      <created>1638982657494</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1638982657494</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Adding DateTimeCompareTodayAttribute.">
+      <created>1638985511560</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1638985511560</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Adding DateOnlyAttribute">
+      <created>1638987309406</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1638987309406</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Adding extra namespaces to test project to clear up the using">
+      <created>1638987339289</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1638987339289</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Adding RequiredIfAttribute.">
+      <created>1638991774130</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1638991774130</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Refactoring common logic in to a DependantPropertyBaseAttribute">
+      <created>1639002502917</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1639002502917</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Aligning error messages">
+      <created>1639002754304</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1639002754304</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Refactoring date attributes to use ErrorMessageString so that they're overridable by custom text.">
+      <created>1639003152464</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1639003152464</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Adding RequiredIfAttribute">
+      <created>1639006375387</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1639006375387</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Fixing up logic for RequiredIfContains">
+      <created>1639008855691</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1639008855692</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
+  <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
+  <component name="UnityUnitTestConfiguration" currentTestLauncher="NUnit" />
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+    <MESSAGE value="Adding AvailableIf Attribute and tests" />
+    <MESSAGE value="Adding AvailableIfContainsAttribute" />
+    <MESSAGE value="Simplifying the logic within PossibleDependantPropertyValues method" />
+    <MESSAGE value="Adding in BankAccountNumberAttribute" />
+    <MESSAGE value="Adding NationalInsuranceNumberAttribute." />
+    <MESSAGE value="Adding PhoneNumberAttribute" />
+    <MESSAGE value="Email is a DataType Email address." />
+    <MESSAGE value="Adding PostcodeAttribute" />
+    <MESSAGE value="Enabling ImplicitUsings and adding the namespace System.ComponentModel.DataAnnotations" />
+    <MESSAGE value="Adding DateTimeCompareTodayAttribute." />
+    <MESSAGE value="Adding DateOnlyAttribute" />
+    <MESSAGE value="Adding extra namespaces to test project to clear up the using" />
+    <MESSAGE value="Adding RequiredIfAttribute." />
+    <MESSAGE value="Refactoring common logic in to a DependantPropertyBaseAttribute" />
+    <MESSAGE value="Aligning error messages" />
+    <MESSAGE value="Refactoring date attributes to use ErrorMessageString so that they're overridable by custom text." />
+    <MESSAGE value="Adding RequiredIfAttribute" />
+    <MESSAGE value="Fixing up logic for RequiredIfContains" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixing up logic for RequiredIfContains" />
+  </component>
+</project>
