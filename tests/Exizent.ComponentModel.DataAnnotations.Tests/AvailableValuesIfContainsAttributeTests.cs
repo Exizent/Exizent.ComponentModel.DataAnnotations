@@ -100,6 +100,25 @@ public class AvailableValuesIfContainsAttributeTests
             isValid.Should().BeTrue();
             results.Should().BeEmpty();
         }
+        
+        [Theory]
+        [InlineData("Hello")]
+        [InlineData("World")]
+        [InlineData("anything")]
+        public void ShouldBeValidForAnyValueWhenNotPossibleDependentValue(string value)
+        {
+            var model = new SinglePossibleDependentValueTestModel
+            {
+                DependentValues = new[] { TestEnum.Value1, TestEnum.Value4 },
+                Value = value
+            };
+
+            var (results, isValid) = ValidateModel(model);
+
+            using var _ = new AssertionScope();
+            isValid.Should().BeTrue();
+            results.Should().BeEmpty();
+        }
 
 
         [Fact]

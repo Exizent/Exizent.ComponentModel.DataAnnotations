@@ -4,7 +4,8 @@ public class AvailableValuesIfContainsAttribute : AvailableIfContainsAttribute
 {
     public object[] AvailableFieldValues { get; }
 
-    public AvailableValuesIfContainsAttribute(string dependentProperty, object dependantPropertyValue, params object[] availableFieldValues)
+    public AvailableValuesIfContainsAttribute(string dependentProperty,
+        object dependantPropertyValue, params object[] availableFieldValues)
         : base(dependentProperty, dependantPropertyValue)
     {
         ErrorMessage = "The field {0} must contain {1} when {2} is assign to {3}.";
@@ -13,17 +14,19 @@ public class AvailableValuesIfContainsAttribute : AvailableIfContainsAttribute
 
     protected override bool IsValid(object? value, object? dependentPropertyValue)
     {
-        if(value == null)
+        if (value == null)
             return true;
-        
+
         var isValid = base.IsValid(value, dependentPropertyValue);
-        if(isValid)
+        if (isValid)
         {
-            isValid = AvailableFieldValues.Any(availableFieldValue => Equals(availableFieldValue, value));
+            return AvailableFieldValues.Any(availableFieldValue
+                => Equals(availableFieldValue, value));
         }
-        return isValid;
+
+        return true;
     }
-    
+
     protected override string FormatErrorMessage(object? value, object? dependentPropertyValue,
         DependentPropertyValidationContext validationContext)
     {

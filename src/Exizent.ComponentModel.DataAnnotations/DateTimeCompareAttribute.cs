@@ -21,5 +21,8 @@ public class DateTimeCompareAttribute : DateTimeCompareBaseAttribute
     }
     
     protected override string FormatErrorMessage(ValidationContext validationContext, DateTime? dateTime)
-        => string.Format(ErrorMessageString, validationContext.DisplayName, FormatEqualityCondition(EqualityCondition), OtherProperty);
+        => string.Format(ErrorMessageString,
+            validationContext.DisplayName,
+            FormatEqualityCondition(EqualityCondition),
+            OtherProperty);
 }

@@ -2,6 +2,9 @@
 
 internal static class ValueFormatter
 {
+    public static string FormatValue(object? value)
+        => value?.ToString() ?? "null";
+
     public static string FormatOrValues(object[] values)
         => FormatValues(values, "or");
     
@@ -11,10 +14,10 @@ internal static class ValueFormatter
     private static string FormatValues(object[] values, string joiningWord)
     {
         if (values is { Length: 1 })
-            return values[0].ToString() ?? string.Empty;
+            return FormatValue(values[0]);
 
-        var formatted = string.Join(", ", values[..^1]);
+        var formatted = string.Join(", ", values[..^1].Select(FormatValue));
 
-        return formatted + " " + joiningWord + " " + values[^1];
+        return formatted + " " + joiningWord + " " + FormatValue(values[^1]);
     }
 }
