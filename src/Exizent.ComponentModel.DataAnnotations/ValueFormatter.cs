@@ -9,7 +9,7 @@ internal static class ValueFormatter
         => FormatValues(values, "or");
     
     public static string FormatAndValues(object[] values)
-        => FormatValues(values, "or");
+        => FormatValues(values, "and");
 
     private static string FormatValues(object[] values, string joiningWord)
     {
