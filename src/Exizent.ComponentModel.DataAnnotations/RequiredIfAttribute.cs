@@ -34,7 +34,5 @@ public class RequiredIfAttribute : DependantPropertyBaseAttribute
     }
 
     private string FormatRequiredValue()
-    {
-        return _requiredValue?.ToString() ?? "null";
-    }
+        => ValueFormatter.FormatValue(_requiredValue);
 }

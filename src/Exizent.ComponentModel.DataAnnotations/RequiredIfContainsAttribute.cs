@@ -49,12 +49,5 @@ public class RequiredIfContainsAttribute : DependantPropertyBaseAttribute
     }
 
     private string FormatPossibleDependantPropertyValues()
-    {
-        if (DependantPropertyRequiredValues is { Length: 1 })
-            return DependantPropertyRequiredValues[0].ToString();
-
-        var formatted = string.Join(", ", DependantPropertyRequiredValues[..^1]);
-
-        return formatted + " and " + DependantPropertyRequiredValues[^1];
-    }
+        => ValueFormatter.FormatAndValues(DependantPropertyRequiredValues);
 }

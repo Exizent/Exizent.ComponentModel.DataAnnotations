@@ -41,12 +41,5 @@ public class AvailableIfContainsAttribute : DependantPropertyBaseAttribute
     }
 
     private string FormatPossibleDependantPropertyValues()
-    {
-        if (PossibleDependantPropertyValues is { Length: 1 })
-            return PossibleDependantPropertyValues[0].ToString();
-
-        var formatted = string.Join(", ", PossibleDependantPropertyValues[..^1]);
-
-        return formatted + " or " + PossibleDependantPropertyValues[^1];
-    }
+        => ValueFormatter.FormatOrValues(PossibleDependantPropertyValues);
 }
