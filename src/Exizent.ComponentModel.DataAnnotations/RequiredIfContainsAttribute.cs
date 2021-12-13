@@ -17,7 +17,7 @@ public class RequiredIfContainsAttribute : DependantPropertyBaseAttribute
     {
         if (dependentPropertyValue == null)
             return true;
-        
+
         if (dependentPropertyValue is not IEnumerable enumerable)
         {
             throw new InvalidOperationException(
@@ -26,10 +26,10 @@ public class RequiredIfContainsAttribute : DependantPropertyBaseAttribute
 
         var dependentValues = enumerable.Cast<object>().ToArray();
 
-        if(dependentValues.Length == 0)
+        if (dependentValues.Length == 0)
             return true;
-        
-        if(DependantPropertyRequiredValues.All(x => dependentValues.Any(val => Equals(val, x))))
+
+        if (DependantPropertyRequiredValues.All(x => dependentValues.Any(val => Equals(val, x))))
         {
             return ValidateInnerAttribute(value);
         }
@@ -41,11 +41,16 @@ public class RequiredIfContainsAttribute : DependantPropertyBaseAttribute
     {
         return _innerAttribute.IsValid(value);
     }
-    
+
     protected override string FormatErrorMessage(object? value, object? dependentPropertyValue,
         DependentPropertyValidationContext validationContext)
     {
-        return string.Format(ErrorMessageString, validationContext.ValidationContext.DisplayName, DependentProperty, FormatPossibleDependantPropertyValues());
+        return string.Format(
+            ErrorMessageString,
+            validationContext.ValidationContext.DisplayName,
+            DependentProperty,
+            FormatPossibleDependantPropertyValues()
+        );
     }
 
     private string FormatPossibleDependantPropertyValues()
