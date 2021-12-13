@@ -1,7 +1,6 @@
-using System.Reflection;
-
 namespace Exizent.ComponentModel.DataAnnotations;
 
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter, AllowMultiple = true)]
 public abstract class DependantPropertyBaseAttribute : ValidationAttribute
 {
     public string DependentProperty { get; }
