@@ -26,7 +26,7 @@ public class StringValueLengthAttribute : StringLengthAttribute
 
         var invalidValues = keyValuePairs
             .Where(x => !IsValid(x.Value))
-            .Select(x => $"{validationContext.MemberName}.{x.Value}")
+            .Select(x => $"{validationContext.MemberName}.{x.Key}")
             .ToArray();
 
         if (invalidValues.Length > 0)

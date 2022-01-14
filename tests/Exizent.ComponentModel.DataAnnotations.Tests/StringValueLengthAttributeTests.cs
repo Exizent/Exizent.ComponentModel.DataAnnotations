@@ -52,17 +52,17 @@ public class StringValueLengthAttributeTests
     [InlineData(4)]
     public void ShouldBeInvalidForValuesOutOfRange(int valueLength)
     {
-        var value1 = new string('a', valueLength);
-        var value2 = new string('b', valueLength);
-        var value3 = new string('c', valueLength);
+        const string key1 = "key1";
+        const string key2 = "key2";
+        const string key3 = "key3";
 
         var model = new TestModel
         {
             KeyValuePairs = new Dictionary<string, string>
             {
-                ["key1"] = value1,
-                ["key2"] = value2,
-                ["key3"] = value3,
+                [key1] = new string('a', valueLength),
+                [key2] = new string('b', valueLength),
+                [key3] = new string('c', valueLength),
                 ["validKey"] = new('d', 2),
             }
         };
@@ -77,9 +77,9 @@ public class StringValueLengthAttributeTests
             .Be("The field values of KeyValuePairs must be a string with a maximum length of 2.");
         results[0].MemberNames.Should()
             .BeEquivalentTo(
-                $"{nameof(TestModel.KeyValuePairs)}.{value1}",
-                $"{nameof(TestModel.KeyValuePairs)}.{value2}",
-                $"{nameof(TestModel.KeyValuePairs)}.{value3}"
+                $"{nameof(TestModel.KeyValuePairs)}.{key1}",
+                $"{nameof(TestModel.KeyValuePairs)}.{key2}",
+                $"{nameof(TestModel.KeyValuePairs)}.{key3}"
             );
     }
 
@@ -137,17 +137,16 @@ public class StringValueLengthAttributeTests
         [InlineData(7)]
         public void ShouldBeInvalidForValuesOutOfRange(int valueLength)
         {
-            var value1 = new string('a', valueLength);
-            var value2 = new string('b', valueLength);
-            var value3 = new string('c', valueLength);
-
+            const string key1 = "key1";
+            const string key2 = "key2";
+            const string key3 = "key3";
             var model = new TestModel
             {
                 KeyValuePairs = new Dictionary<string, string>
                 {
-                    ["key1"] = value1,
-                    ["key2"] = value2,
-                    ["key3"] = value3,
+                    [key1] = new('a', valueLength),
+                    [key2] = new('b', valueLength),
+                    [key3] = new('c', valueLength),
                     ["validKey"] = new('d', 2),
                 }
             };
@@ -162,9 +161,9 @@ public class StringValueLengthAttributeTests
                 .Be("The field values of KeyValuePairs must be a string with a minimum length of 2 and a maximum length of 5.");
             results[0].MemberNames.Should()
                 .BeEquivalentTo(
-                    $"{nameof(TestModel.KeyValuePairs)}.{value1}",
-                    $"{nameof(TestModel.KeyValuePairs)}.{value2}",
-                    $"{nameof(TestModel.KeyValuePairs)}.{value3}"
+                    $"{nameof(TestModel.KeyValuePairs)}.{key1}",
+                    $"{nameof(TestModel.KeyValuePairs)}.{key2}",
+                    $"{nameof(TestModel.KeyValuePairs)}.{key3}"
                 );
         }
     }
