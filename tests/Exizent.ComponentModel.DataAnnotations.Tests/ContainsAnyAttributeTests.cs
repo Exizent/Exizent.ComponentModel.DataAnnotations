@@ -233,7 +233,7 @@ public class ContainsAnyAttributeTests
             Action action = () => Validator.TryValidateObject(model, context, results, true);
 
             action.Should().Throw<InvalidOperationException>()
-                .WithMessage("ContainsAnyAttribute requires a type that implements IEnumerable");
+                .WithMessage("ContainsAnyAttribute requires a type that implements IEnumerable or a type that contains a `Contains` method.");
         }
     }
 }
