@@ -143,6 +143,77 @@ public class ContainsAnyAttributeTests
             results[0].MemberNames.Should().OnlyContain(x => x == nameof(TestModel.PrimeNumber));
         }
     }
+    
+    
+    public class IntContainsAnyAttributeTestsUsingContainsMethod
+    {
+        class TestModel
+        {
+            private static readonly IReadOnlySet<int> _values = new HashSet<int>
+            {
+                2,
+                3,
+                5,
+                7
+            };
+                
+            public bool Contains(int value)
+            {
+                return _values.Contains(value);
+            }
+            
+            [ContainsAny(typeof(TestModel))] public int? PrimeNumber { get; set; }
+        }
+
+        [Theory]
+        [InlineData(2)]
+        [InlineData(3)]
+        [InlineData(5)]
+        public void ShouldBeValidWhenValueIsContainedInIEnumerableType(int primeNumber)
+        {
+            var model = new TestModel { PrimeNumber = primeNumber };
+            var context = new ValidationContext(model);
+            var results = new List<ValidationResult>();
+
+            var isValid = Validator.TryValidateObject(model, context, results, true);
+
+            using var _ = new AssertionScope();
+            isValid.Should().BeTrue();
+            results.Should().BeEmpty();
+        }
+
+        [Fact]
+        public void ShouldBeValidForNullValue()
+        {
+            var model = new TestModel();
+            var context = new ValidationContext(model);
+            var results = new List<ValidationResult>();
+
+            var isValid = Validator.TryValidateObject(model, context, results, true);
+
+            using var _ = new AssertionScope();
+            isValid.Should().BeTrue();
+            results.Should().BeEmpty();
+        }
+
+        [Theory]
+        [InlineData(1)]
+        [InlineData(4)]
+        [InlineData(6)]
+        public void ShouldBeInvalidWhenValueIsNotContainedInIEnumerableType(int primeNumber)
+        {
+            var model = new TestModel { PrimeNumber = primeNumber };
+            var context = new ValidationContext(model);
+            var results = new List<ValidationResult>();
+
+            var isValid = Validator.TryValidateObject(model, context, results, true);
+
+            using var _ = new AssertionScope();
+            isValid.Should().BeFalse();
+            results[0].ErrorMessage.Should().Be($"The field {nameof(TestModel.PrimeNumber)} is invalid.");
+            results[0].MemberNames.Should().OnlyContain(x => x == nameof(TestModel.PrimeNumber));
+        }
+    }
 
     public class InvalidContainsAnyAttributeTests
     {
@@ -155,7 +226,7 @@ public class ContainsAnyAttributeTests
         [Fact]
         public void ShouldThrowExceptionWhenTypeDoesNotImplementIEnumerable()
         {
-            var model = new TestModel();
+            var model = new TestModel {PrimeNumber = 2};
             var context = new ValidationContext(model);
             var results = new List<ValidationResult>();
 
