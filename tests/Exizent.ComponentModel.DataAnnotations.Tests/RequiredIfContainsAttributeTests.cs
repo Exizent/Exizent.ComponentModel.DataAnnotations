@@ -217,6 +217,24 @@ public class RequiredIfContainsAttributeTests
                     $"The field {nameof(RequiredDependentValueTestModel.Value)} is required when {nameof(RequiredDependentValueTestModel.DependentValues)} contains {RequiredDependentValue2} and {RequiredDependentValue3}.");
             results[0].MemberNames.Should().OnlyContain(x => x == nameof(RequiredDependentValueTestModel.Value));
         }
+        
+        [Theory]
+        [InlineData(TestEnum.Value1, RequiredDependentValue2)]
+        [InlineData(RequiredDependentValue2)]
+        [InlineData(RequiredDependentValue2, TestEnum.Value4)]
+        public void ShouldBeValidWhenContainsOnlyOneRequiredDependentValuesAndValueIsNull(params TestEnum[] dependentValues)
+        {
+            var model = new RequiredDependentValueTestModel
+            {
+                DependentValues = dependentValues,
+                Value = null
+            };
+
+            var (_, isValid) = ValidateModel(model);
+
+            using var _ = new AssertionScope();
+            isValid.Should().BeTrue();
+        }
     }
 
     public class ThreeRequiredDependentValueTests
@@ -251,6 +269,23 @@ public class RequiredIfContainsAttributeTests
                 .Be(
                     $"The field {nameof(ThreeRequiredDependentValueTestModel.Value)} is required when {nameof(ThreeRequiredDependentValueTestModel.DependentValues)} contains {RequiredDependentValue2}, {RequiredDependentValue3} and {RequiredDependentValue4}.");
             results[0].MemberNames.Should().OnlyContain(x => x == nameof(ThreeRequiredDependentValueTestModel.Value));
+        }
+        [Theory]
+        [InlineData(TestEnum.Value1, RequiredDependentValue2)]
+        [InlineData(RequiredDependentValue2, RequiredDependentValue3)]
+        [InlineData(RequiredDependentValue2, TestEnum.Value4)]
+        public void ShouldBeValidWhenContainsFewerThanRequiredDependentValuesAndValueIsNull(params TestEnum[] dependentValues)
+        {
+            var model = new ThreeRequiredDependentValueTestModel
+            {
+                DependentValues = dependentValues,
+                Value = null
+            };
+
+            var (_, isValid) = ValidateModel(model);
+
+            using var _ = new AssertionScope();
+            isValid.Should().BeTrue();
         }
     }
 
