@@ -25,7 +25,6 @@ public class DefaultValueIfNotOneOfAttribute : DependantPropertyBaseAttribute
 
         if (!DependantPropertyRequiredValues.Any(x => Equals(dependentPropertyValue, x)))
         {
-            //if there aren't any required values, then the validated property must be null or empty string 
             if (value is null)
                 return true;
 

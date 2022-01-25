@@ -18,7 +18,7 @@ public class RequiredIfOneOfAttribute : DependantPropertyBaseAttribute
         if (dependentPropertyValue == null)
             return true;
 
-        if (dependentPropertyValue is IEnumerable enumerable)
+        if (dependentPropertyValue is IEnumerable)
         {
             throw new InvalidOperationException(
                 $"The dependent property '{DependentProperty}' must not be of type IEnumerable");
