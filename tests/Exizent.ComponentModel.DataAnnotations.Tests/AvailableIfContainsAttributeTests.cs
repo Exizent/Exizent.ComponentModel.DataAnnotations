@@ -16,13 +16,6 @@ public class AvailableIfContainsAttributeTests
         public string? Value { get; set; }
     }
     
-    class InvalidDependentPropertyTypeTestClass
-    {
-        public int DependentProperty { get; set; }
-        [AvailableIfContains(nameof(DependentProperty), 1)]
-        public string? Value { get; set; }
-    }
-    
     [Fact]
     public void ShouldThrowInvalidOperationExceptionForInvalidDependentProperty()
     {
@@ -38,24 +31,56 @@ public class AvailableIfContainsAttributeTests
             .WithMessage("The dependent property '*' does not exist");
     }
     
-    [Fact]
-    public void ShouldThrowInvalidOperationExceptionForInvalidDependentPropertyType()
+    public class DependentValueTests
     {
-        var model = new InvalidDependentPropertyTypeTestClass
+        const TestEnum PossibleDependentValue = TestEnum.Value2;
+
+        class DependentValueTestModel
         {
-            DependentProperty = 4,
-            Value = Guid.NewGuid().ToString()
-        };
+            public TestEnum? DependentValue { get; set; }
 
-        Action action = () => ValidateModel(model);
+            [AvailableIfContains(nameof(DependentValue), PossibleDependentValue)]
+            public string? Value { get; set; }
+        }
 
-        action.Should()
-            .Throw<InvalidOperationException>()
-            .WithMessage("The dependent property '*' must be of type IEnumerable");
+        [Fact]
+        public void ShouldBeValidForNullPropertyValue()
+        {
+            var model = new DependentValueTestModel
+            {
+                Value = null
+            };
+
+            var (results, isValid) = ValidateModel(model);
+
+            using var _ = new AssertionScope();
+            isValid.Should().BeTrue();
+            results.Should().BeEmpty();
+        }
+
+        [Theory]
+        [InlineData(TestEnum.Value1)]
+        [InlineData(TestEnum.Value3)]
+        public void ShouldBeInvalidWhenPossibleDependentValueIsNotContained(TestEnum dependentValue)
+        {
+            var model = new DependentValueTestModel
+            {
+                DependentValue = dependentValue,
+                Value = Guid.NewGuid().ToString()
+            };
+
+            var (results, isValid) = ValidateModel(model);
+
+            using var _ = new AssertionScope();
+            isValid.Should().BeFalse();
+            results[0].ErrorMessage.Should()
+                .Be(
+                    $"The field {nameof(DependentValueTestModel.DependentValue)} must contain Value2 to assign {nameof(DependentValueTestModel.Value)} to {model.Value}.");
+            results[0].MemberNames.Should().OnlyContain(x => x == nameof(DependentValueTestModel.Value));
+        }
     }
-    
 
-    public class SinglePossibleDependentValueTests
+    public class SinglePossibleDependentValueWhenIEnumerableTests
     {
         const TestEnum PossibleDependentValue = TestEnum.Value2;
 
@@ -124,7 +149,7 @@ public class AvailableIfContainsAttributeTests
         }
     }
 
-    public class TwoPossibleDependentValueTests
+    public class TwoPossibleDependentValueWhenIEnumerableTests
     {
         private const TestEnum PossibleDependentValue1 = TestEnum.Value2;
         private const TestEnum PossibleDependentValue2 = TestEnum.Value3;
@@ -195,7 +220,7 @@ public class AvailableIfContainsAttributeTests
         }
     }
 
-    public class ThreePossibleDependentValueTests
+    public class ThreePossibleDependentValueWhenIEnumerableTests
     {
         private const TestEnum PossibleDependentValue1 = TestEnum.Value2;
         private const TestEnum PossibleDependentValue2 = TestEnum.Value3;

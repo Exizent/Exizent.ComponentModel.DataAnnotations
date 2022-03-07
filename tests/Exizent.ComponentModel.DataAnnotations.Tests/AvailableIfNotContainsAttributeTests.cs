@@ -16,14 +16,6 @@ public class AvailableIfNotContainsAttributeTests
         public string? Value { get; set; }
     }
 
-    class InvalidDependentPropertyTypeTestClass
-    {
-        public int DependentProperty { get; set; }
-
-        [AvailableIfNotContains(nameof(DependentProperty), 1)]
-        public string? Value { get; set; }
-    }
-
     [Fact]
     public void ShouldThrowInvalidOperationExceptionForInvalidDependentProperty()
     {
@@ -39,24 +31,72 @@ public class AvailableIfNotContainsAttributeTests
             .WithMessage("The dependent property '*' does not exist");
     }
 
-    [Fact]
-    public void ShouldThrowInvalidOperationExceptionForInvalidDependentPropertyType()
+    public class SingleDependentValueTests
     {
-        var model = new InvalidDependentPropertyTypeTestClass
+        const TestEnum NotDependentValue = TestEnum.Value2;
+
+        class DependentValueTestModel
         {
-            DependentProperty = 4,
-            Value = Guid.NewGuid().ToString()
-        };
+            public TestEnum? DependentValues { get; set; }
 
-        Action action = () => ValidateModel(model);
+            [AvailableIfNotContains(nameof(DependentValues), NotDependentValue)]
+            public string? Value { get; set; }
+        }
 
-        action.Should()
-            .Throw<InvalidOperationException>()
-            .WithMessage("The dependent property '*' must be of type IEnumerable");
+        [Fact]
+        public void ShouldBeValidForNullPropertyValue()
+        {
+            var model = new DependentValueTestModel
+            {
+                Value = null
+            };
+
+            var (results, isValid) = ValidateModel(model);
+
+            using var _ = new AssertionScope();
+            isValid.Should().BeTrue();
+            results.Should().BeEmpty();
+        }
+
+        [Theory]
+        [InlineData(TestEnum.Value1)]
+        [InlineData(TestEnum.Value3)]
+        public void ShouldBeValidForNotDependentValue(TestEnum extraValues)
+        {
+            var model = new DependentValueTestModel
+            {
+                DependentValues = extraValues,
+                Value = Guid.NewGuid().ToString()
+            };
+
+            var (results, isValid) = ValidateModel(model);
+
+            using var _ = new AssertionScope();
+            isValid.Should().BeTrue();
+            results.Should().BeEmpty();
+        }
+
+        [Fact]
+        public void ShouldBeInvalidWhenNotDependentValueIsContained()
+        {
+            var model = new DependentValueTestModel
+            {
+                DependentValues = NotDependentValue,
+                Value = Guid.NewGuid().ToString()
+            };
+
+            var (results, isValid) = ValidateModel(model);
+
+            using var _ = new AssertionScope();
+            isValid.Should().BeFalse();
+            results[0].ErrorMessage.Should()
+                .Be(
+                    $"The field {nameof(DependentValueTestModel.DependentValues)} must not contain Value2 to assign {nameof(DependentValueTestModel.Value)} to {model.Value}.");
+            results[0].MemberNames.Should().OnlyContain(x => x == nameof(DependentValueTestModel.Value));
+        }
     }
 
-
-    public class SinglePossibleDependentValueTests
+    public class SinglePossibleDependentValueIEnumerableTests
     {
         const TestEnum NotDependentValue = TestEnum.Value2;
 
@@ -125,7 +165,7 @@ public class AvailableIfNotContainsAttributeTests
         }
     }
 
-    public class TwoPossibleDependentValueTests
+    public class TwoPossibleDependentValueIEnumerableTests
     {
         private const TestEnum NotDependentValue1 = TestEnum.Value2;
         private const TestEnum NotDependentValue2 = TestEnum.Value3;
@@ -218,7 +258,7 @@ public class AvailableIfNotContainsAttributeTests
         }
     }
 
-    public class ThreePossibleDependentValueTests
+    public class ThreePossibleDependentValueIEnumerableTests
     {
         private const TestEnum NotDependentValue1 = TestEnum.Value2;
         private const TestEnum NotDependentValue2 = TestEnum.Value3;
