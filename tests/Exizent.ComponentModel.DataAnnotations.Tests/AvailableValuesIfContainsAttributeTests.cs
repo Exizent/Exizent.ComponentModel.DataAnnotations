@@ -39,24 +39,92 @@ public class AvailableValuesIfContainsAttributeTests
             .WithMessage("The dependent property '*' does not exist");
     }
 
-    [Fact]
-    public void ShouldThrowInvalidOperationExceptionForInvalidDependentPropertyType()
+    public class DependentValueTests
     {
-        var model = new InvalidDependentPropertyTypeTestClass
+        const TestEnum PossibleDependentValue = TestEnum.Value2;
+
+        class DependentValueTestModel
         {
-            DependentProperty = 4,
-            Value = Guid.NewGuid().ToString()
-        };
+            public TestEnum? DependentValue { get; set; }
 
-        Action action = () => ValidateModel(model);
+            [AvailableValuesIfContains(nameof(DependentValue), PossibleDependentValue, "Hello", "World")]
+            public string? Value { get; set; }
+        }
 
-        action.Should()
-            .Throw<InvalidOperationException>()
-            .WithMessage("The dependent property '*' must be of type IEnumerable");
+        [Fact]
+        public void ShouldBeValidForNullPropertyValue()
+        {
+            var model = new DependentValueTestModel
+            {
+                Value = null
+            };
+
+            var (results, isValid) = ValidateModel(model);
+
+            using var _ = new AssertionScope();
+            isValid.Should().BeTrue();
+            results.Should().BeEmpty();
+        }
+
+        [Theory]
+        [InlineData("Hello")]
+        [InlineData("World")]
+        public void ShouldBeValidForPossibleDependentAndValue(string value)
+        {
+            var model = new DependentValueTestModel
+            {
+                DependentValue = PossibleDependentValue,
+                Value = value
+            };
+
+            var (results, isValid) = ValidateModel(model);
+
+            using var _ = new AssertionScope();
+            isValid.Should().BeTrue();
+            results.Should().BeEmpty();
+        }
+        
+        [Theory]
+        [InlineData("Hello")]
+        [InlineData("World")]
+        [InlineData("anything")]
+        public void ShouldBeValidForAnyValueWhenNotPossibleDependentValue(string value)
+        {
+            var model = new DependentValueTestModel
+            {
+                DependentValue = TestEnum.Value1,
+                Value = value
+            };
+
+            var (results, isValid) = ValidateModel(model);
+
+            using var _ = new AssertionScope();
+            isValid.Should().BeTrue();
+            results.Should().BeEmpty();
+        }
+
+
+        [Fact]
+        public void ShouldBeInvalidWhenPossibleDependentValueAndFieldValuesDoNotMatch()
+        {
+            var model = new DependentValueTestModel
+            {
+                DependentValue = PossibleDependentValue,
+                Value = Guid.NewGuid().ToString()
+            };
+
+            var (results, isValid) = ValidateModel(model);
+
+            using var _ = new AssertionScope();
+            isValid.Should().BeFalse();
+            
+            results[0].ErrorMessage.Should()
+                .Be($"The field {nameof(DependentValueTestModel.Value)} must contain Hello or World when {nameof(DependentValueTestModel.DependentValue)} is assign to {PossibleDependentValue}.");
+            results[0].MemberNames.Should().OnlyContain(x => x == nameof(DependentValueTestModel.Value));
+        }
     }
 
-
-    public class SinglePossibleDependentValueTests
+    public class SinglePossibleDependentValueIEnumerableTests
     {
         const TestEnum PossibleDependentValue = TestEnum.Value2;
 
@@ -140,7 +208,6 @@ public class AvailableValuesIfContainsAttributeTests
             results[0].MemberNames.Should().OnlyContain(x => x == nameof(SinglePossibleDependentValueTestModel.Value));
         }
     }
-
 
     private static (List<ValidationResult> results, bool isValid) ValidateModel<TModel>(TModel model)
         where TModel : notnull

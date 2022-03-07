@@ -16,21 +16,14 @@ public class AvailableIfContainsAttribute : DependantPropertyBaseAttribute
     {
         if(value == null)
             return true;
-        
-        if (dependentPropertyValue is not IEnumerable enumerable)
+
+        if (dependentPropertyValue is IEnumerable enumerable)
         {
-            throw new InvalidOperationException(
-                $"The dependent property '{DependentProperty}' must be of type IEnumerable");
+            var dependentValues = enumerable.Cast<object>().ToArray();
+            return dependentValues.Any(x => PossibleDependantPropertyValues.Any(val => val.Equals(x)));
         }
 
-        var dependentValues = enumerable.Cast<object>().ToArray();
-
-        if (dependentValues.All(x => !PossibleDependantPropertyValues.Any(val => val.Equals(x))))
-        {
-            return false;
-        }
-
-        return true;
+        return PossibleDependantPropertyValues.Any(val => val.Equals(dependentPropertyValue));
     }
 
     protected override string FormatErrorMessage(object? value, object? dependentPropertyValue,
