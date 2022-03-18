@@ -6,3 +6,4 @@ riderModule.iml
 *.suo
 artifacts/
 TestResults/
+*.DotSettings.user 
