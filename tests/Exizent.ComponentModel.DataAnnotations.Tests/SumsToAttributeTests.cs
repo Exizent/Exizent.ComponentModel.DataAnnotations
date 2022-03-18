@@ -96,7 +96,7 @@ public class SumsToAttributeTests
         isValid.Should().BeFalse();
         results.Should().NotBeEmpty().And.HaveCount(1);
         results[0].ErrorMessage.Should().Be("The 'Percentage' members of 'Values' must sum to 1");
-        results[0].MemberNames.Single().Should().Be("Values[1].Percentage");
+        results[0].MemberNames.Single().Should().Be("Percentage");
     }
 
     public class WhenChildValueIsNullable
@@ -164,7 +164,7 @@ public class SumsToAttributeTests
             isValid.Should().BeFalse();
             results.Should().NotBeEmpty().And.HaveCount(1);
             results[0].ErrorMessage.Should().Be("The 'Percentage' members of 'Values' must sum to 1");
-            results[0].MemberNames.Single().Should().Be("Values[1].Percentage");
+            results[0].MemberNames.Single().Should().Be("Percentage");
         }
     }
     
@@ -243,7 +243,7 @@ public class SumsToAttributeTests
             isValid.Should().BeFalse();
             results.Should().NotBeEmpty().And.HaveCount(1);
             results[0].ErrorMessage.Should().Be("The 'Percentage' members of 'Values' must sum to 1");
-            results[0].MemberNames.Single().Should().Be("Values[1].Percentage");
+            results[0].MemberNames.Single().Should().Be("Percentage");
         }
     }
 }

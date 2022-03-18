@@ -28,22 +28,20 @@ public class SumsToAttribute : ValidationAttribute
             return ValidationResult.Success;
 
         decimal sum = 0m;
-        int index = 0;
         foreach (var item in evaluated)
         {
-            var propertyInfo = evaluated[index].GetType().GetProperty(ChildPropertyName);
+            var propertyInfo = item.GetType().GetProperty(ChildPropertyName);
             if (propertyInfo is null)
                 throw new InvalidOperationException($"The property '{ChildPropertyName}' is missing");
-            
+
             sum += Convert.ToDecimal(propertyInfo.GetValue(item));
-            if (sum > _expected || index == evaluated.Length - 1)
+            if (sum > _expected)
                 break;
-            index++;
         }
 
         return sum == (decimal)Expected ? ValidationResult.Success : new ValidationResult(
             $"The '{ChildPropertyName}' members of '{validationContext.MemberName}' must sum to {Expected}", 
-            new []{$"{validationContext.MemberName}[{index}].{ChildPropertyName}"}
+            new []{ChildPropertyName}
         );
     }
 }
