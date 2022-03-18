@@ -8,7 +8,7 @@ public class AvailableValuesIfContainsAttribute : AvailableIfContainsAttribute
         object dependantPropertyValue, params object[] availableFieldValues)
         : base(dependentProperty, dependantPropertyValue)
     {
-        ErrorMessage = "The field {0} must contain {1} when {2} is assign to {3}.";
+        ErrorMessage = "The field {0} must contain {1} when {2} is assigned to {3}.";
         AvailableFieldValues = availableFieldValues;
     }
 

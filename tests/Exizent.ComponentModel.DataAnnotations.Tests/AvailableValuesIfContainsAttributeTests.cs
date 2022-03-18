@@ -119,7 +119,7 @@ public class AvailableValuesIfContainsAttributeTests
             isValid.Should().BeFalse();
             
             results[0].ErrorMessage.Should()
-                .Be($"The field {nameof(DependentValueTestModel.Value)} must contain Hello or World when {nameof(DependentValueTestModel.DependentValue)} is assign to {PossibleDependentValue}.");
+                .Be($"The field {nameof(DependentValueTestModel.Value)} must contain Hello or World when {nameof(DependentValueTestModel.DependentValue)} is assigned to {PossibleDependentValue}.");
             results[0].MemberNames.Should().OnlyContain(x => x == nameof(DependentValueTestModel.Value));
         }
     }
@@ -204,7 +204,7 @@ public class AvailableValuesIfContainsAttributeTests
             isValid.Should().BeFalse();
             
             results[0].ErrorMessage.Should()
-                .Be($"The field {nameof(SinglePossibleDependentValueTestModel.Value)} must contain Hello or World when {nameof(SinglePossibleDependentValueTestModel.DependentValues)} is assign to {PossibleDependentValue}.");
+                .Be($"The field {nameof(SinglePossibleDependentValueTestModel.Value)} must contain Hello or World when {nameof(SinglePossibleDependentValueTestModel.DependentValues)} is assigned to {PossibleDependentValue}.");
             results[0].MemberNames.Should().OnlyContain(x => x == nameof(SinglePossibleDependentValueTestModel.Value));
         }
     }

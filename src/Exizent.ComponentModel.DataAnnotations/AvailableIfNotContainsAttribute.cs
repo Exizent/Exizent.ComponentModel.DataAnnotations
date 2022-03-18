@@ -15,9 +15,9 @@ public class AvailableIfNotContainsAttribute : AvailableIfContainsAttribute
 
     protected override bool IsValid(object? value, object? dependentPropertyValue)
     {
-        if(value == null)
+        if (value == null)
             return true;
-        
-       return !base.IsValid(value, dependentPropertyValue);
+
+        return !base.IsValid(value, dependentPropertyValue);
     }
 }
