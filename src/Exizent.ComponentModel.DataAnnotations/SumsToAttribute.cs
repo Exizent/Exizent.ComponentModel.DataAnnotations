@@ -3,6 +3,7 @@ using System.Collections;
 [AttributeUsage(AttributeTargets.Property)]
 public class SumsToAttribute : ValidationAttribute
 {
+    private readonly decimal _expected;
     public string ChildPropertyName { get; }
     public double Expected { get; }
 
@@ -10,6 +11,7 @@ public class SumsToAttribute : ValidationAttribute
     {
         ChildPropertyName = childPropertyName;
         Expected = expected;
+        _expected = (decimal) expected;
     }
 
     protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
@@ -28,10 +30,20 @@ public class SumsToAttribute : ValidationAttribute
         var propertyInfo = evaluated.ElementAt(0).GetType().GetProperty(ChildPropertyName);
         if (propertyInfo is null)
             throw new InvalidOperationException($"The property '{ChildPropertyName}' is missing");
-        decimal sum = evaluated.Select(item => propertyInfo.GetValue(item)).Select(Convert.ToDecimal).Sum();
+
+        decimal sum = 0m;
+        int index = 0;
+        foreach (var item in evaluated)
+        {
+            sum += Convert.ToDecimal(propertyInfo.GetValue(item));
+            if (sum > _expected || index == evaluated.Length - 1)
+                break;
+            index++;
+        }
 
         return sum == (decimal)Expected ? ValidationResult.Success : new ValidationResult(
-            $"The '{ChildPropertyName}' members of '{validationContext.MemberName}' must sum to {Expected}"
+            $"The '{ChildPropertyName}' members of '{validationContext.MemberName}' must sum to {Expected}", 
+            new []{$"{validationContext.MemberName}[{index}].{ChildPropertyName}"}
         );
     }
 }

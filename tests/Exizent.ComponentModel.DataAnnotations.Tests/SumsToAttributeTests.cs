@@ -94,8 +94,9 @@ public class SumsToAttributeTests
 
         using var _ = new AssertionScope();
         isValid.Should().BeFalse();
-        results.Should().NotBeEmpty();
-        results.Should().OnlyContain(x => x.ErrorMessage == "The 'Percentage' members of 'Values' must sum to 1");
+        results.Should().NotBeEmpty().And.HaveCount(1);
+        results[0].ErrorMessage.Should().Be("The 'Percentage' members of 'Values' must sum to 1");
+        results[0].MemberNames.Single().Should().Be("Values[1].Percentage");
     }
 
     public class WhenChildValueIsNullable
@@ -161,8 +162,9 @@ public class SumsToAttributeTests
 
             using var _ = new AssertionScope();
             isValid.Should().BeFalse();
-            results.Should().NotBeEmpty();
-            results.Should().OnlyContain(x => x.ErrorMessage == "The 'Percentage' members of 'Values' must sum to 1");
+            results.Should().NotBeEmpty().And.HaveCount(1);
+            results[0].ErrorMessage.Should().Be("The 'Percentage' members of 'Values' must sum to 1");
+            results[0].MemberNames.Single().Should().Be("Values[1].Percentage");
         }
     }
 }
