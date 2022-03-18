@@ -27,14 +27,14 @@ public class SumsToAttribute : ValidationAttribute
         if (evaluated.Length == 0)
             return ValidationResult.Success;
 
-        var propertyInfo = evaluated.ElementAt(0).GetType().GetProperty(ChildPropertyName);
-        if (propertyInfo is null)
-            throw new InvalidOperationException($"The property '{ChildPropertyName}' is missing");
-
         decimal sum = 0m;
         int index = 0;
         foreach (var item in evaluated)
         {
+            var propertyInfo = evaluated[index].GetType().GetProperty(ChildPropertyName);
+            if (propertyInfo is null)
+                throw new InvalidOperationException($"The property '{ChildPropertyName}' is missing");
+            
             sum += Convert.ToDecimal(propertyInfo.GetValue(item));
             if (sum > _expected || index == evaluated.Length - 1)
                 break;

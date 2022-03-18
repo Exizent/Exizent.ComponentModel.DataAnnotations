@@ -167,4 +167,83 @@ public class SumsToAttributeTests
             results[0].MemberNames.Single().Should().Be("Values[1].Percentage");
         }
     }
+    
+    public class WhenChildValueIsPolymorphic
+    {
+        class PolymorphicTestModel
+        {
+            public abstract class ValueBase
+            {
+                public abstract decimal Percentage { get; set; }
+            }
+            
+            public class Value1 : ValueBase
+            {
+                public override decimal Percentage { get; set; }
+            }
+            
+            public class Value2 : ValueBase
+            {
+                public override decimal Percentage { get; set; }
+            }
+
+            [SumsTo(nameof(ValueBase.Percentage), 1)] public IEnumerable<ValueBase>? Values { get; set; }
+        }
+
+        [Fact]
+        public void ShouldBeValidWhenSumsToExpected()
+        {
+            var model = new PolymorphicTestModel
+            {
+                Values = new PolymorphicTestModel.ValueBase[]
+                {
+                    new PolymorphicTestModel.Value1
+                    {
+                        Percentage = 0.33m
+                    },
+                    new PolymorphicTestModel.Value2
+                    {
+                        Percentage = 0.67m
+                    }
+                }
+            };
+            var context = new ValidationContext(model);
+            var results = new List<ValidationResult>();
+
+            var isValid = Validator.TryValidateObject(model, context, results, true);
+
+            using var _ = new AssertionScope();
+            isValid.Should().BeTrue();
+            results.Should().BeEmpty();
+        }
+
+        [Fact]
+        public void ShouldBeInvalidWhenDoesNotSumAsExpected()
+        {
+            var model = new PolymorphicTestModel
+            {
+                Values = new PolymorphicTestModel.ValueBase[]
+                {
+                    new PolymorphicTestModel.Value1
+                    {
+                        Percentage = 0.0m
+                    },
+                    new PolymorphicTestModel.Value2
+                    {
+                        Percentage = 1.0001m
+                    }
+                }
+            };
+            var context = new ValidationContext(model);
+            var results = new List<ValidationResult>();
+
+            var isValid = Validator.TryValidateObject(model, context, results, true);
+
+            using var _ = new AssertionScope();
+            isValid.Should().BeFalse();
+            results.Should().NotBeEmpty().And.HaveCount(1);
+            results[0].ErrorMessage.Should().Be("The 'Percentage' members of 'Values' must sum to 1");
+            results[0].MemberNames.Single().Should().Be("Values[1].Percentage");
+        }
+    }
 }
