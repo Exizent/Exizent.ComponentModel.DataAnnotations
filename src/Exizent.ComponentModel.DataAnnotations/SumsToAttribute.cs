@@ -40,7 +40,7 @@ public class SumsToAttribute : ValidationAttribute
         }
 
         return sum == (decimal)Expected ? ValidationResult.Success : new ValidationResult(
-            $"The '{ChildPropertyName}' members of '{validationContext.MemberName}' must sum to {Expected}", 
+            $"The {ChildPropertyName} members of {validationContext.MemberName} must sum to {Expected}.", 
             new []{ChildPropertyName}
         );
     }
