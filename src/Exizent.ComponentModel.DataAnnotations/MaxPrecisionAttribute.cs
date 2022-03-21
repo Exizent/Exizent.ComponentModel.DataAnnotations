@@ -4,15 +4,15 @@ public class MaxPrecisionAttribute : ValidationAttribute
 {
     public int MaxPrecision { get; }
 
-    public MaxPrecisionAttribute(int maxPrecision)
+    public MaxPrecisionAttribute(int maxPrecision) : base($"The field {{0}} must have a max precision of {maxPrecision} decimal places.")
     {
         MaxPrecision = maxPrecision;
     }
 
-    protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
+    public override bool IsValid(object? value)
     {
         if (value is null)
-            return ValidationResult.Success;
+            return true;
 
         decimal typedValue;
         try
@@ -22,11 +22,9 @@ public class MaxPrecisionAttribute : ValidationAttribute
         catch (InvalidCastException ex)
         {
             throw new InvalidOperationException(
-                $"Field '{validationContext.MemberName}' must be convertible to decimal", ex);
+                "Field must be convertible to decimal", ex);
         }
 
-        return decimal.Round(typedValue, MaxPrecision) == typedValue
-            ? ValidationResult.Success
-            : new ValidationResult($"The field {validationContext.MemberName} must have a max precision of {MaxPrecision} decimal places.", validationContext.MemberName is not null ? new[] {validationContext.MemberName} : null);
+        return decimal.Round(typedValue, MaxPrecision) == typedValue;
     }
 }
