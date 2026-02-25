@@ -68,7 +68,7 @@ public class ContainsAnyAttributeTests
 
             using var _ = new AssertionScope();
             isValid.Should().BeFalse();
-            results[0].ErrorMessage.Should().Be($"The field {nameof(TestModel.CountryCode)} is invalid.");
+            results[0].ErrorMessage.Should().Be($"The field {nameof(TestModel.CountryCode)} must be one of the allowed values.");
             results[0].MemberNames.Should().OnlyContain(x => x == nameof(TestModel.CountryCode));
         }
     }
@@ -139,7 +139,7 @@ public class ContainsAnyAttributeTests
 
             using var _ = new AssertionScope();
             isValid.Should().BeFalse();
-            results[0].ErrorMessage.Should().Be($"The field {nameof(TestModel.PrimeNumber)} is invalid.");
+            results[0].ErrorMessage.Should().Be($"The field {nameof(TestModel.PrimeNumber)} must be one of the allowed values.");
             results[0].MemberNames.Should().OnlyContain(x => x == nameof(TestModel.PrimeNumber));
         }
     }
@@ -210,7 +210,7 @@ public class ContainsAnyAttributeTests
 
             using var _ = new AssertionScope();
             isValid.Should().BeFalse();
-            results[0].ErrorMessage.Should().Be($"The field {nameof(TestModel.PrimeNumber)} is invalid.");
+            results[0].ErrorMessage.Should().Be($"The field {nameof(TestModel.PrimeNumber)} must be one of the allowed values.");
             results[0].MemberNames.Should().OnlyContain(x => x == nameof(TestModel.PrimeNumber));
         }
     }
