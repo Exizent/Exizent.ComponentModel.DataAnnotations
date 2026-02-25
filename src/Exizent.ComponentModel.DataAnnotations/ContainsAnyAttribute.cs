@@ -14,6 +14,7 @@ public class ContainsAnyAttribute : ValidationAttribute
     public ContainsAnyAttribute(Type valueProviderType)
     {
         _valueProviderType = valueProviderType;
+        ErrorMessage = "The field {0} must be one of the allowed values.";
     }
 
     public override bool IsValid(object? value)

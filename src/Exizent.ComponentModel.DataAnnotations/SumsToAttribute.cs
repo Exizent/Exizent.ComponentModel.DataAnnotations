@@ -1,5 +1,7 @@
 using System.Collections;
 
+namespace Exizent.ComponentModel.DataAnnotations;
+
 [AttributeUsage(AttributeTargets.Property)]
 public class SumsToAttribute : ValidationAttribute
 {
@@ -8,6 +10,7 @@ public class SumsToAttribute : ValidationAttribute
     public double Expected { get; }
 
     public SumsToAttribute(string childPropertyName, double expected)
+        : base("The {0} members of {1} must sum to {2}.")
     {
         ChildPropertyName = childPropertyName;
         Expected = expected;
@@ -40,7 +43,7 @@ public class SumsToAttribute : ValidationAttribute
         }
 
         return sum == (decimal)Expected ? ValidationResult.Success : new ValidationResult(
-            $"The {ChildPropertyName} members of {validationContext.MemberName} must sum to {Expected}.", 
+            string.Format(ErrorMessageString, ChildPropertyName, validationContext.MemberName, Expected), 
             new []{ChildPropertyName}
         );
     }
