@@ -1,5 +1,7 @@
 using System.Collections;
 
+namespace Exizent.ComponentModel.DataAnnotations;
+
 [AttributeUsage(AttributeTargets.Property)]
 public class SumsToAttribute : ValidationAttribute
 {
