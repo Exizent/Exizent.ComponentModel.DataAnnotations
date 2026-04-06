@@ -16,7 +16,7 @@ COPY ./src/Exizent.ComponentModel.DataAnnotations/*.csproj ./src/Exizent.Compone
 COPY ./tests/Exizent.ComponentModel.DataAnnotations.Tests/*.csproj ./tests/Exizent.ComponentModel.DataAnnotations.Tests/
 RUN dotnet restore
 
-FROM restore as build
+FROM restore AS build
 ARG CONFIGURATION
 ARG NUGET_PACKAGE_VERSION
 
@@ -24,10 +24,11 @@ COPY ./src/ ./src/
 COPY ./tests/ ./tests/
 RUN dotnet build --configuration $CONFIGURATION --no-restore
 
-FROM build as test
+FROM build AS test
+RUN mkdir -p /TestResults
 RUN dotnet test --logger "trx;LogFilePath=/TestResults/TestResults.trx" --configuration $CONFIGURATION --no-build
 
-FROM build as pack
+FROM build AS pack
 RUN mkdir -p artifacts
 RUN dotnet pack --configuration Release -p:Version=${NUGET_PACKAGE_VERSION} --no-build --output ./artifacts
 
