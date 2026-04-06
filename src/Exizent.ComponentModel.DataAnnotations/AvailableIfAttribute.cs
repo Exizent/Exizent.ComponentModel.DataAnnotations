@@ -27,5 +27,5 @@ public class AvailableIfAttribute : DependantPropertyBaseAttribute
     }
 
     private string FormatDependantPropertyRequiredValue()
-        => DependantPropertyRequiredValue is null ? "null" : DependantPropertyRequiredValue.ToString();
+        => DependantPropertyRequiredValue is null ? "null" : DependantPropertyRequiredValue.ToString()!;
 }

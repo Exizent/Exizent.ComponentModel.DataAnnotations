@@ -64,6 +64,8 @@ bool isValid = Validator.TryValidateObject(model, context, results, validateAllP
 ### Collection, Comparison & Membership Attributes
 
 - [ContainsAny](#containsany)
+- [DateOnlyCompare](#dateonlycompare)
+- [DateOnlyCompareToday](#dateonlycomparetoday)
 - [DateTimeCompare](#datetimecompare)
 - [DateTimeCompareToday](#datetimecomparetoday)
 - [StringKeyLength](#stringkeylength)
@@ -598,6 +600,51 @@ public class Maths
 
 ---
 
+### DateOnlyCompare
+
+Compares a `DateOnly` property against another `DateOnly` property using an `EqualityCondition`.
+
+```csharp
+public class DateRange
+{
+    public DateOnly? StartDate { get; set; }
+
+    [DateOnlyCompare(nameof(StartDate), EqualityCondition.GreaterThan)]
+    public DateOnly? EndDate { get; set; }
+}
+```
+
+**Error message:** `"The field {0} must be {1} {2}."`
+
+| Parameter | Description |
+|-----------|-------------|
+| `{0}` | Current property name |
+| `{1}` | Equality condition text (e.g. "greater than") |
+| `{2}` | Other property name |
+
+---
+
+### DateOnlyCompareToday
+
+Compares a `DateOnly` property against today's date using an `EqualityCondition`.
+
+```csharp
+public class Booking
+{
+    [DateOnlyCompareToday(EqualityCondition.GreaterThanOrEquals)]
+    public DateOnly? CheckInDate { get; set; }
+}
+```
+
+**Error message:** `"The field {0} must be {1} today."`
+
+| Parameter | Description |
+|-----------|-------------|
+| `{0}` | Current property name |
+| `{1}` | Equality condition text (e.g. "greater than or equal to") |
+
+---
+
 ### DateTimeCompare
 
 Compares a `DateTime` property against another `DateTime` property using an `EqualityCondition`.
@@ -722,7 +769,7 @@ public class Portfolio
 
 ## EqualityCondition Enum
 
-Used by [`DateTimeCompare`](#datetimecompare) and [`DateTimeCompareToday`](#datetimecomparetoday) to specify the comparison operation.
+Used by [`DateOnlyCompare`](#dateonlycompare), [`DateOnlyCompareToday`](#dateonlycomparetoday), [`DateTimeCompare`](#datetimecompare) and [`DateTimeCompareToday`](#datetimecomparetoday) to specify the comparison operation.
 
 | Value | Formatted Text |
 |-------|---------------|
