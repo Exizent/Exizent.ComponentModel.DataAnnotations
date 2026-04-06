@@ -22,7 +22,7 @@ public class ContainsAnyAttribute : ValidationAttribute
         if (value == null)
             return true;
 
-        var instance = Activator.CreateInstance(_valueProviderType);
+        var instance = Activator.CreateInstance(_valueProviderType)!;
 
         if(ContainsMethodHelper.TryGetContainsMethod(instance, out var containsMethod))
         {
@@ -45,7 +45,7 @@ public class ContainsAnyAttribute : ValidationAttribute
             var methodInfo = value.GetType().GetMethod("Contains");
             if (methodInfo != null && methodInfo.GetParameters().Length == 1 && methodInfo.ReturnType == typeof(bool))
             {
-                contains = input => (bool)methodInfo.Invoke(value, new[] { input });
+                contains = input => (bool)methodInfo.Invoke(value, new[] { input })!;
                 return true;
             }
             
