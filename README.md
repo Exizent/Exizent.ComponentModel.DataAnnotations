@@ -42,6 +42,7 @@ bool isValid = Validator.TryValidateObject(model, context, results, validateAllP
 - [EmailAddress](#emailaddress)
 - [MaxPrecision](#maxprecision)
 - [NationalInsuranceNumber](#nationalinsurancenumber)
+- [PercentageFieldRange](#percentagefieldrange)
 - [PhoneNumber](#phonenumber)
 - [Postcode](#postcode)
 - [SortCode](#sortcode)
@@ -239,6 +240,34 @@ public class Person
 | Parameter | Description |
 |-----------|-------------|
 | `{0}` | Property name |
+
+---
+
+### PercentageFieldRange
+
+Extends `RangeAttribute` for decimal properties that hold a **normalised percentage** — e.g. `98.1234%` is passed in as `0.981234`. `minimum`/`maximum` must therefore also be expressed in the normalised range (e.g. `0` to `1` for `0%`-`100%`). `maxDecimalPlaces` is the number of decimal places allowed on the percentage as displayed; the underlying normalised value is allowed `maxDecimalPlaces + 2` decimal places to account for the shift.
+
+```csharp
+public class Discount
+{
+    // Allows 0%-100%, displayed with up to 4 decimal places (e.g. 98.1234%),
+    // passed in as a normalised fraction with up to 6 decimal places (e.g. 0.981234).
+    [PercentageFieldRange(0, 1, 4)]
+    public decimal? Rate { get; set; }
+}
+```
+
+**Error message (value outside the range):** the standard `RangeAttribute` message (controlled via the inherited `ErrorMessage`), e.g. `"The field {0} must be between {1} and {2}."`
+
+**Error message (too many decimal places):** controlled via the separate `DecimalPlacesErrorMessage` property, defaulting to `"{0} must be passed as a decimal fraction with a maximum of {1} decimal places (a percentage with up to {2} decimal places, e.g. 98.1234% as 0.981234)."`
+
+| Parameter | Description |
+|-----------|-------------|
+| `{0}` | Property name |
+| `{1}` | Max decimal places on the normalised value (`maxDecimalPlaces + 2`) |
+| `{2}` | Max decimal places as displayed (`maxDecimalPlaces`) |
+
+> **Note:** These are placeholders rather than baked-in values, so you can override `DecimalPlacesErrorMessage` and still reference `{0}`-`{2}` in your own message, e.g. `[PercentageFieldRange(0, 1, 4, DecimalPlacesErrorMessage = "{0} needs <= {1} raw decimal places.")]`.
 
 ---
 
