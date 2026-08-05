@@ -4,14 +4,21 @@ namespace Exizent.ComponentModel.DataAnnotations;
 // so minimum/maximum should be expressed in that normalised range too, e.g. 0 to 1 for 0%-100%.
 public class PercentageFieldRangeAttribute : RangeAttribute
 {
+    private readonly double _minimumPercentage;
+    private readonly double _maximumPercentage;
+
     public PercentageFieldRangeAttribute(double minimum, double maximum, int maxDecimalPlaces)
         : base(minimum, maximum)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(maxDecimalPlaces);
 
         MaxDecimalPlaces = maxDecimalPlaces;
+        _minimumPercentage = minimum * 100;
+        _maximumPercentage = maximum * 100;
+
+        ErrorMessage = "The field {0} must be a percentage between {1}% and {2}%.";
         DecimalPlacesErrorMessage =
-            "{0} must be passed as a decimal fraction with a maximum of {1} decimal places (a percentage with up to {2} decimal places, e.g. 98.1234% as 0.981234).";
+            "The field {0} must be a percentage between {1}% and {2}% with up to {3} decimal places (passed in as a decimal fraction with a maximum of {4} decimal places, e.g. 98.1234% as 0.981234).";
     }
 
     public int MaxDecimalPlaces { get; }
@@ -24,7 +31,7 @@ public class PercentageFieldRangeAttribute : RangeAttribute
             return ValidationResult.Success;
 
         if (!base.IsValid(value))
-            return new ValidationResult(base.FormatErrorMessage(validationContext.DisplayName), GetMemberNames(validationContext));
+            return new ValidationResult(FormatRangeErrorMessage(validationContext.DisplayName), GetMemberNames(validationContext));
 
         decimal typedValue;
         try
@@ -46,8 +53,11 @@ public class PercentageFieldRangeAttribute : RangeAttribute
         return ValidationResult.Success;
     }
 
+    private string FormatRangeErrorMessage(string name)
+        => string.Format(ErrorMessageString, name, _minimumPercentage, _maximumPercentage);
+
     private string FormatDecimalPlacesErrorMessage(string name, int effectiveMaxDecimalPlaces)
-        => string.Format(DecimalPlacesErrorMessage, name, effectiveMaxDecimalPlaces, MaxDecimalPlaces);
+        => string.Format(DecimalPlacesErrorMessage, name, _minimumPercentage, _maximumPercentage, MaxDecimalPlaces, effectiveMaxDecimalPlaces);
 
     private static string[]? GetMemberNames(ValidationContext validationContext)
         => validationContext.MemberName is null ? null : new[] { validationContext.MemberName };

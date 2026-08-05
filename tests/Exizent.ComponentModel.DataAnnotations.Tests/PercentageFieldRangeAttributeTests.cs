@@ -10,9 +10,15 @@ public class PercentageFieldRangeAttributeTests
         public decimal? Value { get; set; }
     }
 
-    class CustomMessageTestModel
+    class CustomRangeMessageTestModel
     {
-        [PercentageFieldRange(0, 1, 4, DecimalPlacesErrorMessage = "{0} needs <= {1} raw dp ({2} display dp).")]
+        [PercentageFieldRange(0, 1, 4, ErrorMessage = "{0} must sit within {1}% to {2}%.")]
+        public decimal? Value { get; set; }
+    }
+
+    class CustomDecimalPlacesMessageTestModel
+    {
+        [PercentageFieldRange(0, 1, 4, DecimalPlacesErrorMessage = "{0} needs {1}%-{2}%, <= {4} raw dp ({3} display dp).")]
         public decimal? Value { get; set; }
     }
 
@@ -62,7 +68,8 @@ public class PercentageFieldRangeAttributeTests
 
         using var _ = new AssertionScope();
         isValid.Should().BeFalse();
-        results[0].ErrorMessage.Should().Contain("between");
+        results[0].ErrorMessage.Should()
+            .Be($"The field {nameof(TestModel.Value)} must be a percentage between 0% and 100%.");
         results[0].MemberNames.Should().BeEquivalentTo(nameof(TestModel.Value));
     }
 
@@ -80,14 +87,14 @@ public class PercentageFieldRangeAttributeTests
         using var _ = new AssertionScope();
         isValid.Should().BeFalse();
         results[0].ErrorMessage.Should()
-            .Be($"{nameof(TestModel.Value)} must be passed as a decimal fraction with a maximum of 6 decimal places (a percentage with up to 4 decimal places, e.g. 98.1234% as 0.981234).");
+            .Be($"The field {nameof(TestModel.Value)} must be a percentage between 0% and 100% with up to 4 decimal places (passed in as a decimal fraction with a maximum of 6 decimal places, e.g. 98.1234% as 0.981234).");
         results[0].MemberNames.Should().BeEquivalentTo(nameof(TestModel.Value));
     }
 
     [Fact]
-    public void ShouldAllowOverridingTheDecimalPlacesErrorMessageAndStillReferenceTheDecimalPlaceValues()
+    public void ShouldAllowOverridingTheRangeErrorMessageAndStillReferenceThePercentageBounds()
     {
-        var model = new CustomMessageTestModel { Value = 0.9812345m };
+        var model = new CustomRangeMessageTestModel { Value = -0.1m };
         var context = new ValidationContext(model);
         var results = new List<ValidationResult>();
 
@@ -96,7 +103,22 @@ public class PercentageFieldRangeAttributeTests
         using var _ = new AssertionScope();
         isValid.Should().BeFalse();
         results[0].ErrorMessage.Should()
-            .Be($"{nameof(CustomMessageTestModel.Value)} needs <= 6 raw dp (4 display dp).");
+            .Be($"{nameof(CustomRangeMessageTestModel.Value)} must sit within 0% to 100%.");
+    }
+
+    [Fact]
+    public void ShouldAllowOverridingTheDecimalPlacesErrorMessageAndStillReferenceThePercentageBoundsAndDecimalPlaceValues()
+    {
+        var model = new CustomDecimalPlacesMessageTestModel { Value = 0.9812345m };
+        var context = new ValidationContext(model);
+        var results = new List<ValidationResult>();
+
+        var isValid = Validator.TryValidateObject(model, context, results, true);
+
+        using var _ = new AssertionScope();
+        isValid.Should().BeFalse();
+        results[0].ErrorMessage.Should()
+            .Be($"{nameof(CustomDecimalPlacesMessageTestModel.Value)} needs 0%-100%, <= 6 raw dp (4 display dp).");
     }
 
     [Theory]

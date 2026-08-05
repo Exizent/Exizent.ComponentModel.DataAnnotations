@@ -257,17 +257,27 @@ public class Discount
 }
 ```
 
-**Error message (value outside the range):** the standard `RangeAttribute` message (controlled via the inherited `ErrorMessage`), e.g. `"The field {0} must be between {1} and {2}."`
+Both error messages always state the valid range as an **unnormalised percentage** (`minimum`/`maximum` × 100), even though the value itself is passed in normalised.
 
-**Error message (too many decimal places):** controlled via the separate `DecimalPlacesErrorMessage` property, defaulting to `"{0} must be passed as a decimal fraction with a maximum of {1} decimal places (a percentage with up to {2} decimal places, e.g. 98.1234% as 0.981234)."`
+**Error message (value outside the range):** controlled via the inherited `ErrorMessage` property, defaulting to `"The field {0} must be a percentage between {1}% and {2}%."`
 
 | Parameter | Description |
 |-----------|-------------|
 | `{0}` | Property name |
-| `{1}` | Max decimal places on the normalised value (`maxDecimalPlaces + 2`) |
-| `{2}` | Max decimal places as displayed (`maxDecimalPlaces`) |
+| `{1}` | Minimum, as an unnormalised percentage (`minimum * 100`) |
+| `{2}` | Maximum, as an unnormalised percentage (`maximum * 100`) |
 
-> **Note:** These are placeholders rather than baked-in values, so you can override `DecimalPlacesErrorMessage` and still reference `{0}`-`{2}` in your own message, e.g. `[PercentageFieldRange(0, 1, 4, DecimalPlacesErrorMessage = "{0} needs <= {1} raw decimal places.")]`.
+**Error message (too many decimal places):** controlled via the separate `DecimalPlacesErrorMessage` property, defaulting to `"The field {0} must be a percentage between {1}% and {2}% with up to {3} decimal places (passed in as a decimal fraction with a maximum of {4} decimal places, e.g. 98.1234% as 0.981234)."`
+
+| Parameter | Description |
+|-----------|-------------|
+| `{0}` | Property name |
+| `{1}` | Minimum, as an unnormalised percentage (`minimum * 100`) |
+| `{2}` | Maximum, as an unnormalised percentage (`maximum * 100`) |
+| `{3}` | Max decimal places as displayed (`maxDecimalPlaces`) |
+| `{4}` | Max decimal places on the normalised value (`maxDecimalPlaces + 2`) |
+
+> **Note:** These are placeholders rather than baked-in values, so you can override `ErrorMessage`/`DecimalPlacesErrorMessage` and still reference the same placeholders in your own message, e.g. `[PercentageFieldRange(0, 1, 4, DecimalPlacesErrorMessage = "{0} needs <= {4} raw decimal places.")]`.
 
 ---
 
