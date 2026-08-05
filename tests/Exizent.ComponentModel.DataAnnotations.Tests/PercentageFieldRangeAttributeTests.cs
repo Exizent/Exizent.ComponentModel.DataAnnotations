@@ -6,19 +6,19 @@ public class PercentageFieldRangeAttributeTests
     {
         // 0%-100%, displayed with a max of 4 decimal places (e.g. 98.1234),
         // but passed in as a normalised fraction (e.g. 0.981234), i.e. 6 decimal places.
-        [PercentageFieldRange(0, 1, 4)]
+        [PercentageFieldRange("0", "1", 4)]
         public decimal? Value { get; set; }
     }
 
     class CustomRangeMessageTestModel
     {
-        [PercentageFieldRange(0, 1, 4, ErrorMessage = "{0} must sit within {1}% to {2}%.")]
+        [PercentageFieldRange("0", "1", 4, ErrorMessage = "{0} must sit within {1}% to {2}%.")]
         public decimal? Value { get; set; }
     }
 
     class CustomDecimalPlacesMessageTestModel
     {
-        [PercentageFieldRange(0, 1, 4, DecimalPlacesErrorMessage = "{0} needs {1}%-{2}%, <= {4} raw dp ({3} display dp).")]
+        [PercentageFieldRange("0", "1", 4, DecimalPlacesErrorMessage = "{0} needs {1}%-{2}%, <= {4} raw dp ({3} display dp).")]
         public decimal? Value { get; set; }
     }
 
@@ -126,7 +126,7 @@ public class PercentageFieldRangeAttributeTests
     [InlineData(-100)]
     public void ShouldThrowWhenMaxDecimalPlacesIsNegative(int maxDecimalPlaces)
     {
-        var act = () => new PercentageFieldRangeAttribute(0, 1, maxDecimalPlaces);
+        var act = () => new PercentageFieldRangeAttribute("0", "1", maxDecimalPlaces);
 
         act.Should().Throw<ArgumentOutOfRangeException>();
     }

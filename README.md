@@ -245,14 +245,14 @@ public class Person
 
 ### PercentageFieldRange
 
-Extends `RangeAttribute` for decimal properties that hold a **normalised percentage** — e.g. `98.1234%` is passed in as `0.981234`. `minimum`/`maximum` must therefore also be expressed in the normalised range (e.g. `0` to `1` for `0%`-`100%`). `maxDecimalPlaces` is the number of decimal places allowed on the percentage as displayed; the underlying normalised value is allowed `maxDecimalPlaces + 2` decimal places to account for the shift.
+Extends `RangeAttribute` for decimal properties that hold a **normalised percentage** — e.g. `98.1234%` is passed in as `0.981234`. `minimum`/`maximum` must therefore also be expressed in the normalised range (e.g. `0` to `1` for `0%`-`100%`), and are passed as `string`s (parsed as `decimal` under the hood) to avoid the precision loss that `double` bounds would introduce. `maxDecimalPlaces` is the number of decimal places allowed on the percentage as displayed; the underlying normalised value is allowed `maxDecimalPlaces + 2` decimal places to account for the shift.
 
 ```csharp
 public class Discount
 {
     // Allows 0%-100%, displayed with up to 4 decimal places (e.g. 98.1234%),
     // passed in as a normalised fraction with up to 6 decimal places (e.g. 0.981234).
-    [PercentageFieldRange(0, 1, 4)]
+    [PercentageFieldRange("0", "1", 4)]
     public decimal? Rate { get; set; }
 }
 ```
