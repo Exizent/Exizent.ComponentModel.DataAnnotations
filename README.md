@@ -42,6 +42,7 @@ bool isValid = Validator.TryValidateObject(model, context, results, validateAllP
 - [EmailAddress](#emailaddress)
 - [MaxPrecision](#maxprecision)
 - [NationalInsuranceNumber](#nationalinsurancenumber)
+- [PercentageFieldRange](#percentagefieldrange)
 - [PhoneNumber](#phonenumber)
 - [Postcode](#postcode)
 - [SortCode](#sortcode)
@@ -239,6 +240,44 @@ public class Person
 | Parameter | Description |
 |-----------|-------------|
 | `{0}` | Property name |
+
+---
+
+### PercentageFieldRange
+
+Extends `RangeAttribute` for decimal properties that hold a **normalised percentage** — e.g. `98.1234%` is passed in as `0.981234`. `minimum`/`maximum` must therefore also be expressed in the normalised range (e.g. `0` to `1` for `0%`-`100%`). `maxDecimalPlaces` is the number of decimal places allowed on the percentage as displayed; the underlying normalised value is allowed `maxDecimalPlaces + 2` decimal places to account for the shift.
+
+```csharp
+public class Discount
+{
+    // Allows 0%-100%, displayed with up to 4 decimal places (e.g. 98.1234%),
+    // passed in as a normalised fraction with up to 6 decimal places (e.g. 0.981234).
+    [PercentageFieldRange(0, 1, 4)]
+    public decimal? Rate { get; set; }
+}
+```
+
+Both error messages always state the valid range as an **unnormalised percentage** (`minimum`/`maximum` × 100), even though the value itself is passed in normalised.
+
+**Error message (value outside the range):** controlled via the inherited `ErrorMessage` property, defaulting to `"The field {0} must be a percentage between {1}% and {2}%."`
+
+| Parameter | Description |
+|-----------|-------------|
+| `{0}` | Property name |
+| `{1}` | Minimum, as an unnormalised percentage (`minimum * 100`) |
+| `{2}` | Maximum, as an unnormalised percentage (`maximum * 100`) |
+
+**Error message (too many decimal places):** controlled via the separate `DecimalPlacesErrorMessage` property, defaulting to `"The field {0} must be a percentage between {1}% and {2}% with up to {3} decimal places (passed in as a decimal fraction with a maximum of {4} decimal places, e.g. 98.1234% as 0.981234)."`
+
+| Parameter | Description |
+|-----------|-------------|
+| `{0}` | Property name |
+| `{1}` | Minimum, as an unnormalised percentage (`minimum * 100`) |
+| `{2}` | Maximum, as an unnormalised percentage (`maximum * 100`) |
+| `{3}` | Max decimal places as displayed (`maxDecimalPlaces`) |
+| `{4}` | Max decimal places on the normalised value (`maxDecimalPlaces + 2`) |
+
+> **Note:** These are placeholders rather than baked-in values, so you can override `ErrorMessage`/`DecimalPlacesErrorMessage` and still reference the same placeholders in your own message, e.g. `[PercentageFieldRange(0, 1, 4, DecimalPlacesErrorMessage = "{0} needs <= {4} raw decimal places.")]`.
 
 ---
 
