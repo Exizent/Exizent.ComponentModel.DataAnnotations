@@ -1,20 +1,23 @@
+using System.Globalization;
+
 namespace Exizent.ComponentModel.DataAnnotations;
 
 // Expects the value to be a normalised percentage, e.g. 98.1234% is passed in as 0.981234,
 // so minimum/maximum should be expressed in that normalised range too, e.g. 0 to 1 for 0%-100%.
 public class PercentageFieldRangeAttribute : RangeAttribute
 {
-    private readonly double _minimumPercentage;
-    private readonly double _maximumPercentage;
+    private readonly decimal _minimumPercentage;
+    private readonly decimal _maximumPercentage;
 
-    public PercentageFieldRangeAttribute(double minimum, double maximum, int maxDecimalPlaces)
-        : base(minimum, maximum)
+    public PercentageFieldRangeAttribute(string minimum, string maximum, int maxDecimalPlaces)
+        : base(typeof(Decimal), minimum, maximum)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(maxDecimalPlaces);
 
         MaxDecimalPlaces = maxDecimalPlaces;
-        _minimumPercentage = minimum * 100;
-        _maximumPercentage = maximum * 100;
+        ParseLimitsInInvariantCulture = true;
+        _minimumPercentage = decimal.Parse(minimum, CultureInfo.InvariantCulture) * 100;
+        _maximumPercentage = decimal.Parse(maximum, CultureInfo.InvariantCulture) * 100;
 
         ErrorMessage = "The field {0} must be a percentage between {1}% and {2}%.";
         DecimalPlacesErrorMessage =
