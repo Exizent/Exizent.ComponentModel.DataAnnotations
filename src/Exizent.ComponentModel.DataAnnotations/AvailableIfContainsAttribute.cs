@@ -30,7 +30,7 @@ public class AvailableIfContainsAttribute : DependantPropertyBaseAttribute
         DependentPropertyValidationContext validationContext)
     {
         return string.Format(ErrorMessageString, DependentProperty, FormatPossibleDependantPropertyValues(),
-            validationContext.ValidationContext.DisplayName, value);
+            validationContext.ValidationContext.DisplayName, ValueFormatter.FormatValue(value));
     }
 
     private string FormatPossibleDependantPropertyValues()
