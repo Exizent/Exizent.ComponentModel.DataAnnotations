@@ -21,11 +21,11 @@ public class AvailableIfAttribute : DependantPropertyBaseAttribute
         return string.Format(ErrorMessageString,
             validationContext.GetDependentPropertyDisplayName(),
             FormatDependantPropertyRequiredValue(),
-            value,
+            ValueFormatter.FormatValue(value),
             validationContext.ValidationContext.DisplayName
         );
     }
 
     private string FormatDependantPropertyRequiredValue()
-        => DependantPropertyRequiredValue is null ? "null" : DependantPropertyRequiredValue.ToString()!;
+        => ValueFormatter.FormatValue(DependantPropertyRequiredValue);
 }

@@ -16,6 +16,13 @@ public class AvailableIfAttributeTests
         public string? AvailableIfBoolProp { get; set; }
     }
 
+    class CollectionTestModel
+    {
+        public bool BoolProp { get; set; }
+        [AvailableIf(nameof(BoolProp), true)]
+        public IReadOnlyList<Guid>? AvailableIfBoolProp { get; set; }
+    }
+
     [Theory]
     [InlineData(true)]
     [InlineData(false)]
@@ -75,6 +82,25 @@ public class AvailableIfAttributeTests
         results.Should().BeEmpty();
     }
     
+    [Fact]
+    public void ShouldRenderCollectionValueElementsInErrorMessageWhenInvalid()
+    {
+        var guids = new List<Guid> { Guid.NewGuid(), Guid.NewGuid() };
+        var model = new CollectionTestModel { BoolProp = false, AvailableIfBoolProp = guids };
+        var context = new ValidationContext(model);
+        var results = new List<ValidationResult>();
+
+        var isValid = Validator.TryValidateObject(model, context, results, true);
+
+        using var _ = new AssertionScope();
+        isValid.Should().BeFalse();
+        var expectedValues = string.Join(", ", guids);
+        results[0].ErrorMessage.Should().Be(
+            $"The field {nameof(CollectionTestModel.BoolProp)} must be set to {true} to assign {expectedValues} to {nameof(CollectionTestModel.AvailableIfBoolProp)}");
+        results[0].ErrorMessage.Should().NotContain("System.Collections");
+        results[0].MemberNames.Should().OnlyContain(x => x == nameof(CollectionTestModel.AvailableIfBoolProp));
+    }
+
     [Theory]
     [InlineData(true)]
     [InlineData(false)]

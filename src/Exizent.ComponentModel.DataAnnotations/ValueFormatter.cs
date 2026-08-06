@@ -1,9 +1,20 @@
-﻿namespace Exizent.ComponentModel.DataAnnotations;
+﻿using System.Collections;
+
+namespace Exizent.ComponentModel.DataAnnotations;
 
 internal static class ValueFormatter
 {
     public static string FormatValue(object? value)
-        => value?.ToString() ?? "null";
+        => value switch
+        {
+            null => "null",
+            string s => s,
+            // A collection's default ToString() only yields its type name (e.g.
+            // "System.Collections.Generic.List`1[System.Guid]"), which is meaningless in a
+            // validation message. Render the actual elements instead.
+            IEnumerable enumerable => string.Join(", ", enumerable.Cast<object?>().Select(FormatValue)),
+            _ => value.ToString() ?? "null"
+        };
 
     public static string FormatOrValues(object[] values)
         => FormatValues(values, "or");
